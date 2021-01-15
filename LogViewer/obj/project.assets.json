@@ -1053,23 +1053,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\step\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\User\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\work-CSoft\\projects\\LogViewer\\LogViewer\\LogViewer.csproj",
+      "projectUniqueName": "D:\\MyProject\\LoggerCSoft\\LogViewer\\LogViewer.csproj",
       "projectName": "LogViewer",
-      "projectPath": "F:\\work-CSoft\\projects\\LogViewer\\LogViewer\\LogViewer.csproj",
-      "packagesPath": "C:\\Users\\step\\.nuget\\packages\\",
-      "outputPath": "F:\\work-CSoft\\projects\\LogViewer\\LogViewer\\obj\\",
+      "projectPath": "D:\\MyProject\\LoggerCSoft\\LogViewer\\LogViewer.csproj",
+      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+      "outputPath": "D:\\MyProject\\LoggerCSoft\\LogViewer\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\step\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1077,7 +1073,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://www.nuget.org/api/v2/": {}
       },
       "frameworks": {
         "netcoreapp3.1": {
@@ -1138,7 +1134,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   },
