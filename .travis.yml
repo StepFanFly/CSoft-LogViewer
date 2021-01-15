@@ -1,10 +1,9 @@
-on: [push, pull_request]
-name: .NET
 language: csharp
+solution: LogViewer.sln
 sudo: required
 dist: trusty
 mono: none
-dotnet: 3.1.405
+dotnet: 3.1
 
 before_script:
   - dotnet restore
