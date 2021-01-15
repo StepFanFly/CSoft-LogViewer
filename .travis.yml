@@ -6,6 +6,8 @@ dotnet: 3.1.405
 
 solution: LogViewer.sln
 
+os: windows
+
 before_script:
   - dotnet restore
 
