@@ -6,5 +6,6 @@ namespace LogViewer
 {
     class LogFileParser
     {
+        //Hello
     }
 }
