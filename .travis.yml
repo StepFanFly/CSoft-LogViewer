@@ -9,5 +9,5 @@ solution: LogViewer.sln
 install:
   - nuget restore solution-name.sln
   
-  script:
+script:
   - msbuild /p:Configuration=Release LogViewer.sln
