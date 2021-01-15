@@ -8,4 +8,4 @@ before_script:
   - dotnet restore
   
 script:
-  - dotnet  -c Release -f netcoreapp3.0
+  - dotnet build
