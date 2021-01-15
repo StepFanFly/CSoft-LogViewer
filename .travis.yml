@@ -1,10 +1,13 @@
 language: csharp
-solution: LogViewer.sln
-dist: trusty
-mono: none
-dotnet: 5.0
 
-before_script:
-  - dotnet restore
-script:
-  - dotnet build
+mono: none
+
+dotnet: 3.1.405
+
+solution: LogViewer.sln
+
+install:
+  - nuget restore solution-name.sln
+  
+  script:
+  - msbuild /p:Configuration=Release LogViewer.sln
