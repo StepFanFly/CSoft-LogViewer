@@ -20,11 +20,11 @@ namespace LogViewer
             }
             else
             {
-                SimpleIoc.Default.Register<INotifyPropertyChanged, LogViewerVM>();
+                SimpleIoc.Default.Register<LogViewerVM>();
             }
         }
 
-        public LogViewerVM MyVM => (LogViewerVM)ServiceLocator.Current.GetInstance<INotifyPropertyChanged>();
+        public LogViewerVM LogVM => ServiceLocator.Current.GetInstance<LogViewerVM>();
 
     }
 }
