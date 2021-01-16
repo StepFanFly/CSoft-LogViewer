@@ -1,0 +1,11 @@
+language: csharp
+os: windows
+mono: none
+solution: LogViewer.sln
+
+before_script:
+  - choco install dotnetcore-sdk
+  - dotnet restore
+  
+script:
+  - dotnet build
