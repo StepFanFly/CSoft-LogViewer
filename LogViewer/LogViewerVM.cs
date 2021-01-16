@@ -71,7 +71,8 @@ namespace LogViewer
 
         public RelayCommand<LogFile> ShowLogCommand { get { return new RelayCommand<LogFile>(async(selFile)=> 
         {
-            await selFile.ReadFileContentAsync();
+            if(selFile != null)
+                await selFile.ReadFileContentAsync();
         }); } }
     }
 
