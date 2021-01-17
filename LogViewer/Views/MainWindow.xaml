@@ -8,6 +8,7 @@
     xmlns:local="clr-namespace:LogViewer"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:LogViewer.Models"
     Title="MainWindow"
     Width="800"
     Height="450"
@@ -60,7 +61,7 @@
                         </i:Interaction.Triggers>
 
                         <ListBox.ItemTemplate>
-                            <DataTemplate DataType="{x:Type local:LogFile}">
+                            <DataTemplate DataType="{x:Type models:LogFile}">
 
                                 <Grid Height="40">
                                     <Grid.ColumnDefinitions>
@@ -84,7 +85,8 @@
                                         BorderBrush="#FFA6A6A6"
                                         Command="{Binding DataContext.RemoveSelLogCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
                                         CommandParameter="{Binding}"
-                                        Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" Cursor="Hand">
+                                        Cursor="Hand"
+                                        Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
                                         <materialDesign:PackIcon Foreground="Gray" Kind="Refresh" />
                                     </Button>
 
@@ -126,38 +128,29 @@
                                 </ComboBox>
                             </ToolBar>
                         </ToolBarTray>
-                        <WrapPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                            <materialDesign:Chip
-                                Margin="0,0,4,4"
-                                Content="Google inc."
-                                Icon="G"
-                                IconBackground="{DynamicResource PrimaryHueLightBrush}"
-                                IconForeground="{DynamicResource PrimaryHueLightForegroundBrush}"
-                                IsDeletable="True" />
-                            <materialDesign:Chip
-                                Margin="0,0,4,4"
-                                Content="Google inc."
-                                Icon="G"
-                                IconBackground="{DynamicResource PrimaryHueLightBrush}"
-                                IconForeground="{DynamicResource PrimaryHueLightForegroundBrush}"
-                                IsDeletable="True" />
-                            <materialDesign:Chip
-                                Margin="0,0,4,4"
-                                Content="Google inc."
-                                Icon="G"
-                                IconBackground="{DynamicResource PrimaryHueLightBrush}"
-                                IconForeground="{DynamicResource PrimaryHueLightForegroundBrush}"
-                                IsDeletable="True" />
-                            <materialDesign:Chip
-                                Margin="0,0,4,4"
-                                Content="Google inc."
-                                Icon="G"
-                                IconBackground="{DynamicResource PrimaryHueLightBrush}"
-                                IconForeground="{DynamicResource PrimaryHueLightForegroundBrush}"
-                                IsDeletable="True" />
-                        </WrapPanel>
+
+
+                        <ListView DockPanel.Dock="Top" ItemsSource="{Binding LogVM.Filters, Source={StaticResource Locator}}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <materialDesign:Chip
+                                        HorizontalAlignment="Center"
+                                        Content="{Binding Name}"
+                                        Icon="G"
+                                        IconBackground="{DynamicResource PrimaryHueLightBrush}"
+                                        IconForeground="{DynamicResource PrimaryHueLightForegroundBrush}"
+                                        IsDeletable="True" />
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Width="auto" Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                        </ListView>
+
                         <avalonEdit:TextEditor
-                            Grid.Row="1"
+                            DockPanel.Dock="Bottom"
                             FontSize="{Binding Text, ElementName=FontSize}"
                             LineNumbersForeground="Teal"
                             ShowLineNumbers="True">

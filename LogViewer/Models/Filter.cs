@@ -1,5 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+using LogViewer.Models;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -19,7 +19,11 @@ namespace LogViewer
 
         public abstract eFilterType Type { get; set; }
 
-        public abstract void Apply(LogFile file);
+        public abstract string Apply(LogFile file);
+
+
+        public ObservableCollection<string> KeyWords { get; set; } = new ObservableCollection<string>();
+
     }
 
     public class FileNameFilter : Filter
@@ -28,9 +32,12 @@ namespace LogViewer
 
         public override eFilterType Type { get; set; } = eFilterType.eFileName;
 
-        public override void Apply(LogFile file)
+        public override string Apply(LogFile file)
         {
+            //Fill KeyWords
+            //TODO: parse File
 
+            return string.Empty;
         }
     }
 
@@ -40,22 +47,35 @@ namespace LogViewer
 
         public override eFilterType Type { get; set; } = eFilterType.eLabel;
 
-        public override void Apply(LogFile file)
+        public override string Apply(LogFile file)
         {
-
+            //Fill KeyWords
+            //TODO: parse File
+            return string.Empty;
         }
     }
 
-    public class FilterList : ObservableCollection<Filter> 
+
+    public class CreationFilter : Filter
     {
-    
+        public override string Name { get; set; }
+
+        public override eFilterType Type { get; set; } = eFilterType.eNone;
+
+        public override string Apply(LogFile file)
+        {
+            //Fill KeyWords
+            //TODO: parse File
+            return string.Empty;
+        }
     }
+
 
     public static class FilterFactory
     {
-        public static FilterList GetInstance() => Filters;
+        public static ObservableCollection<Filter> GetInstance() => Filters;
 
-        public static FilterList Filters { get; set; } = new FilterList();
+        public static ObservableCollection<Filter> Filters { get; set; } = new ObservableCollection<Filter>();
 
         static FilterFactory()
         {
@@ -70,11 +90,9 @@ namespace LogViewer
                 case eFilterType.eNone:
                     break;
                 case eFilterType.eFileName:
-                    new FileNameFilter();
-                    break;
+                    return new FileNameFilter();
                 case eFilterType.eLabel:
-                    new LabelFilter();
-                    break;
+                    return new LabelFilter();
             }
 
             return null;
@@ -88,35 +106,5 @@ namespace LogViewer
            return FindedType != null ? FindedType.Type : eFilterType.eNone;
            
         }
-
-        //public static Filter CreateFileNameFilter() { return new FileNameFilter(); }
-        //public static Filter CreateLabelFilter() { return new LabelFilter(); }
-        //public static bool IsCurrent(string Name)
-        //{
-
-        //}
-    }
-
-
-    public class FilterVM : ViewModelBase 
-    {
-        public FilterList Filters { get; set; }
-
-        Filter _SelectedFilter;
-        public Filter SelectedFilter { get=> _SelectedFilter;
-            set { _SelectedFilter = value;
-                int n = 1;
-            } }
-
-        public RelayCommand NewFilterCommand => new RelayCommand(() => {
-            Filters.Add(new FileNameFilter());
-            /*_dlgService.Show(LogFiles);*/ });
-
-        public RelayCommand<Filter> RemoveFilterCommand => new RelayCommand<Filter>((filter) =>
-        {
-            Filters.Remove(filter);
-            /*_dlgService.Show(LogFiles);*/
-        });
-
     }
 }

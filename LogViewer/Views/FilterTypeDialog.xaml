@@ -1,0 +1,76 @@
+﻿<UserControl
+    x:Class="LogViewer.DialogWindows.FilterTypeDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:filters="clr-namespace:LogViewer"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    DataContext="{Binding FilterVM, Source={StaticResource Locator}}"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <ObjectDataProvider
+            x:Key="AvailableFilters"
+            MethodName="GetInstance"
+            ObjectType="{x:Type filters:FilterFactory}" />
+
+    </UserControl.Resources>
+    <DockPanel>
+
+        <ComboBox
+            x:Name="ComboCollection"
+            MinWidth="72"
+            Margin="0,10,0,0"
+            VerticalAlignment="Bottom"
+            DockPanel.Dock="Top"
+            ItemsSource="{Binding Source={StaticResource AvailableFilters}}"
+            SelectedIndex="0"
+            SelectedItem="{Binding ItmToCreate}">
+
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+            <ComboBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel />
+                </ItemsPanelTemplate>
+            </ComboBox.ItemsPanel>
+        </ComboBox>
+
+
+        <StackPanel
+            Height="50"
+            Margin="0,16,0,0"
+            DockPanel.Dock="Bottom"
+            Orientation="Horizontal">
+            <Button
+                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                Cursor="Hand"
+                IsCancel="False"
+                IsDefault="True"
+                Style="{DynamicResource MaterialDesignFlatButton}">
+                <Button.CommandParameter>
+                    <system:Boolean>True</system:Boolean>
+                </Button.CommandParameter>
+                ACCEPT
+            </Button>
+
+            <Button
+                Margin="8,0,0,0"
+                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                IsCancel="True"
+                Style="{DynamicResource MaterialDesignFlatButton}">
+                <Button.CommandParameter>
+                    <system:Boolean>False</system:Boolean>
+                </Button.CommandParameter>
+                <!--<Button.CommandParameter>
+                    <system:Boolean>False</system:Boolean>
+                </Button.CommandParameter>-->
+                CANCEL
+            </Button>
+        </StackPanel>
+    </DockPanel>
+</UserControl>

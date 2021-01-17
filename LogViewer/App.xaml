@@ -7,7 +7,7 @@
     xmlns:local="clr-namespace:LogViewer"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     d1p1:Ignorable="d"
-    StartupUri="MainWindow.xaml">
+    StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <local:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />

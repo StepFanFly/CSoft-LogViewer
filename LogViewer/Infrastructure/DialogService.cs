@@ -4,8 +4,8 @@ using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
-using System.Linq;
-using System;
+using CommonServiceLocator;
+using LogViewer.Models;
 
 namespace LogViewer
 {
@@ -13,7 +13,7 @@ namespace LogViewer
     {
         void Show(object content);
 
-        Task ShowAsync(object content);
+        Task<bool> ShowAsync(object content);
     }
 
     public class DialogService : IDialogService
@@ -39,34 +39,26 @@ namespace LogViewer
             }
         }
 
-        public async Task ShowAsync(object content)
+        public async Task<bool> ShowAsync(object content)
         {
-            if (content is FilterList filters)
+            bool bRes = false;
+
+            if (content is ObservableCollection<Filter> filters)
             {
-
-                FilterList filtersCpy = new FilterList();
-                filtersCpy.AsEnumerable().Concat(filters);
-
-                //  filtersCpy.AsEnumerable<Filter>.AddRange(filters);
-                var view = new FilterDialog
-                {
-                    DataContext = new FilterVM() { Filters = filtersCpy }
-                };
-
+                ServiceLocator.Current.GetInstance<FilterVM>().AddFilters(filters);
+                var view = new FilterDialog();
                 //show the dialog
-                var result = await DialogHost.Show(view, "RootDialog", ExtendedOpenedEventHandler, ExtendedClosingEventHandler);
+                var result = await DialogHost.Show(view, "RootDialog", null, (sender, eventArgs) => { bRes = (bool)eventArgs.Parameter; });
             }
-                
-        }
 
-        private void ExtendedClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
-        {
-           // throw new NotImplementedException();
-        }
+            if (content is Filter) 
+            {
+                var view = new FilterTypeDialog();
+                //show the dialog
+                var result = await DialogHost.Show(view, "FilterDialog", null, (sender, eventArgs)=> { bRes = (bool)eventArgs.Parameter; });
+            }
 
-        private void ExtendedOpenedEventHandler(object sender, DialogOpenedEventArgs eventArgs)
-        {
-            //throw new NotImplementedException();
+            return bRes;
         }
     }
 }
