@@ -2,32 +2,17 @@
 using GalaSoft.MvvmLight.Command;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace LogViewer
 {
 
-    
-    static class Converter
-    {
-      readonly static System.Text.Encoding WINDOWS1251 = Encoding.GetEncoding(1251);
-    readonly static System.Text.Encoding UTF8 = Encoding.UTF8;
-
-    public static string ConvertWin1251ToUTF8(string inString)
-    {
-        return UTF8.GetString(WINDOWS1251.GetBytes(inString));
-    }
-
-}
     /// <summary>
     /// This is a simple log file
     /// </summary>
     public class LogFile : ViewModelBase
     {
-
-      
-
         /// <summary>
         /// Path to file
         /// </summary>
@@ -46,14 +31,19 @@ namespace LogViewer
             
             if (File.Exists(FilePath)) 
             {
-                Content = await File.ReadAllTextAsync(FilePath);
+                Content = await FileUtil.ReadAllTextAsync(FilePath);
             }
         }
     }
 
+
+
+
     public class LogViewerVM : ViewModelBase 
     {
         public ObservableCollection<LogFile> LogFiles { get; set; }
+
+        public FilterList Filters { get; set; }
 
         private readonly IDialogService _dlgService;
 
@@ -62,10 +52,13 @@ namespace LogViewer
         public LogViewerVM()
         {
             _dlgService = new DialogService();
-            LogFiles = new ObservableCollection<LogFile>();// { new LogFile { FileInfo = new FileInfo("Test"), FilePath ="sdfsdfsd"} };
+            LogFiles = new ObservableCollection<LogFile>(){ new LogFile { FileInfo = new FileInfo("Test"), FilePath ="sdfsdfsd"} };
+            Filters = new FilterList() { new FileNameFilter { } };
         }
 
         public RelayCommand OpenCommand => new RelayCommand(()=> { _dlgService.Show(LogFiles); });
+
+        public RelayCommand OpenFilterDlgCommand => new RelayCommand(async  () => {await _dlgService.ShowAsync(Filters); });
 
         public RelayCommand<LogFile> RemoveSelLogCommand => new RelayCommand<LogFile>(logFileToRemove => LogFiles.Remove(logFileToRemove) );
 
