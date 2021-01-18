@@ -34,6 +34,7 @@ namespace LogViewer
             var Result = await _dlgService.ShowAsync(FilterFactory.Create(eFilterType.eFileName));
             if (Result == true)
             {
+                ItmToCreate.Init(ServiceLocator.Current.GetInstance<LogViewerVM>().SelLogFile);
                 Filters.Add(ItmToCreate);
             }
         });

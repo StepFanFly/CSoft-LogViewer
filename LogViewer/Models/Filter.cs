@@ -2,6 +2,7 @@
 using LogViewer.Models;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace LogViewer
 {
@@ -15,19 +16,37 @@ namespace LogViewer
 
     public abstract class Filter : ViewModelBase
     {
+        public void Init(LogFile file)
+        {
+            _file = file;
+            ApplyRegex();
+        }
         public abstract string Name { get; set; }
-
         public abstract eFilterType Type { get; set; }
 
         public abstract string Apply(LogFile file);
 
-        public ObservableCollection<string> KeyWords { get; set; } = new ObservableCollection<string>();
+        public string SelectedKeyWord { get; set; }
+        public ObservableCollection<string> AllKeyWords { get;  private set; } = new ObservableCollection<string>();
+        private void ApplyRegex() {
+            MatchCollection matches = InternalRegex.Matches(_file.Content);
+            foreach (Match match in matches)
+            {
+                if (!AllKeyWords.Contains(match.Value))
+                {
+                    AllKeyWords.Add(match.Value);
+                }
+            }
+        }
 
+        private LogFile _file;
+        protected abstract Regex InternalRegex { get; set; }
     }
 
     public class FileNameFilter : Filter
     {
         public override string Name { get; set; } = "По имени файла";
+        protected override Regex InternalRegex { get; set; } = new Regex(@"([a-zA-Z]*\.cpp)");
 
         public override eFilterType Type { get; set; } = eFilterType.eFileName;
 
@@ -43,7 +62,7 @@ namespace LogViewer
     public class LabelFilter : Filter
     {
         public override string Name { get; set; } = "По меткам";
-
+        protected override Regex InternalRegex { get; set; } = new Regex(@"(\[[A-Z]*\])");
         public override eFilterType Type { get; set; } = eFilterType.eLabel;
 
         public override string Apply(LogFile file)
@@ -53,22 +72,6 @@ namespace LogViewer
             return string.Empty;
         }
     }
-
-
-    public class CreationFilter : Filter
-    {
-        public override string Name { get; set; }
-
-        public override eFilterType Type { get; set; } = eFilterType.eNone;
-
-        public override string Apply(LogFile file)
-        {
-            //Fill KeyWords
-            //TODO: parse File
-            return string.Empty;
-        }
-    }
-
 
     public static class FilterFactory
     {

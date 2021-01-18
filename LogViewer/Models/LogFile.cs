@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -15,7 +16,7 @@ namespace LogViewer.Models
         public string FilePath { get; set; }
 
         /// <summary>
-        /// All inforramtion about file
+        /// All information about file
         /// </summary>
         public FileInfo FileInfo { get; set; }
 
@@ -24,7 +25,6 @@ namespace LogViewer.Models
 
         public async Task ReadFileContentAsync()
         {
-
             if (File.Exists(FilePath))
             {
                 Content = await FileUtil.ReadAllTextAsync(FilePath);

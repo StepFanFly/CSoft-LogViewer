@@ -43,6 +43,8 @@
                                 <ComboBox
                                     Grid.Row="2"
                                     Grid.Column="3"
+                                    ItemsSource="{Binding AllKeyWords}"
+                                    SelectedItem="{Binding SelectedKeyWord, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     materialDesign:HintAssist.Hint="Search"
                                     materialDesign:HintAssist.HintOpacity=".26"
                                     IsEditable="True" />
