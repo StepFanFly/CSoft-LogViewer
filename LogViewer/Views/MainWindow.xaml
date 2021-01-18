@@ -160,11 +160,7 @@
                                 </ContextMenu>
                             </avalonEdit:TextEditor.ContextMenu>
                             <i:Interaction.Behaviors>
-<<<<<<< HEAD
                                 <local:AvalonEditBehaviour GiveMeTheText="{Binding ViewSting, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-=======
-                                <local:AvalonEditBehaviour GiveMeTheText="{Binding SelLogFile.Content, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
->>>>>>> 63a338d1bd5316f82bf5c589f9ccecf0916e7419
                             </i:Interaction.Behaviors>
                             <!--<i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseWheel">

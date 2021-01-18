@@ -21,10 +21,6 @@ namespace LogViewer
 
         public abstract string Apply(LogFile file);
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 63a338d1bd5316f82bf5c589f9ccecf0916e7419
         public ObservableCollection<string> KeyWords { get; set; } = new ObservableCollection<string>();
 
     }
@@ -37,10 +33,6 @@ namespace LogViewer
 
         public override string Apply(LogFile file)
         {
-<<<<<<< HEAD
-
-=======
->>>>>>> 63a338d1bd5316f82bf5c589f9ccecf0916e7419
             //Fill KeyWords
             //TODO: parse File
 
