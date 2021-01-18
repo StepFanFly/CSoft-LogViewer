@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\mainicon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AvalonEdit" Version="6.0.1" />
     <PackageReference Include="CommonServiceLocator" Version="2.0.5" />
     <PackageReference Include="MaterialDesignThemes" Version="3.2.0" />
@@ -14,6 +18,10 @@
     <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
     <PackageReference Include="Ninject" Version="3.3.4" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Views\mainicon.ico" />
   </ItemGroup>
 
 </Project>

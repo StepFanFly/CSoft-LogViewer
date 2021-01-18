@@ -13,24 +13,16 @@
     Width="800"
     Height="450"
     DataContext="{Binding LogVM, Source={StaticResource Locator}}"
+    Icon="/Views/mainicon.ico"
+    Style="{StaticResource VSWindowStyle}"
     mc:Ignorable="d">
     <materialDesign:DialogHost Identifier="RootDialog">
         <materialDesign:DrawerHost>
             <DockPanel>
-                <Menu DockPanel.Dock="Top">
-                    <MenuItem Height="25" Header="File">
-                        <MenuItem
-                            Height="25"
-                            Command="{Binding OpenCommand}"
-                            CommandParameter="{Binding}"
-                            Header="Open files..." />
-                        <Separator />
-                        <MenuItem Height="25" Header="Exit" />
-                    </MenuItem>
-                </Menu>
                 <StatusBar DockPanel.Dock="Bottom">
-                    <StatusBarItem>
-                        <TextBlock Name="lblState" Text="Current state" />
+                    <TextBlock Name="lblState" Text="Current state" />
+                    <StatusBarItem HorizontalAlignment="Right">
+                        <ResizeGrip Opacity="0.75" />
                     </StatusBarItem>
                 </StatusBar>
                 <Grid>

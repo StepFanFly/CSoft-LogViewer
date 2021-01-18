@@ -29,6 +29,9 @@ namespace LogViewer
         public string SelectedKeyWord { get; set; }
         public ObservableCollection<string> AllKeyWords { get;  private set; } = new ObservableCollection<string>();
         private void ApplyRegex() {
+            if (string.IsNullOrEmpty(_file.Content))
+                return;
+
             MatchCollection matches = InternalRegex.Matches(_file.Content);
             foreach (Match match in matches)
             {
