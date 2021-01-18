@@ -41,13 +41,13 @@
                                     Text="{Binding Name}" />
 
                                 <ComboBox
-                                    Grid.Row="2"
-                                    Grid.Column="3"
-                                    ItemsSource="{Binding AllKeyWords}"
-                                    SelectedItem="{Binding SelectedKeyWord, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Margin="10,0,0,0"
+                                    HorizontalAlignment="Stretch"
                                     materialDesign:HintAssist.Hint="Search"
                                     materialDesign:HintAssist.HintOpacity=".26"
-                                    IsEditable="True" />
+                                    IsEditable="True"
+                                    ItemsSource="{Binding AllKeyWords}"
+                                    SelectedItem="{Binding OuterListBoxSelectedFilter.SelectedKeyWord, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                 <Button
                                     Width="20"

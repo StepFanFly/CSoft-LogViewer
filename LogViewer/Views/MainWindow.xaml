@@ -107,7 +107,7 @@
                             <ToolBar Style="{DynamicResource MaterialDesignToolBar}">
                                 <Button
                                     Padding="5"
-                                    Command="{Binding OpenFilterDlgCommand}"
+                                    Command="{Binding OpenFilterDlgCommand, UpdateSourceTrigger=PropertyChanged}"
                                     ToolTip="Filter">
                                     <materialDesign:PackIcon Kind="Filter" />
                                 </Button>
@@ -131,7 +131,13 @@
                                         Icon="G"
                                         IconBackground="{DynamicResource PrimaryHueLightBrush}"
                                         IconForeground="{DynamicResource PrimaryHueLightForegroundBrush}"
-                                        IsDeletable="True" />
+                                        IsDeletable="True">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="DeleteClick">
+                                                <i:InvokeCommandAction Command="{Binding LogVM.RemoveFilterCommand, Source={StaticResource Locator}}" CommandParameter="{Binding}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </materialDesign:Chip>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                             <ListView.ItemsPanel>

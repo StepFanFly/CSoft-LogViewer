@@ -116,10 +116,12 @@
                                                     <MenuItem
                                                         Height="25"
                                                         Command="{Binding OpenCommand}"
-                                                        CommandParameter="{Binding}"
                                                         Header="Open files..." />
                                                     <Separator />
-                                                    <MenuItem Height="25" Header="Exit" />
+                                                    <MenuItem
+                                                        Height="25"
+                                                        Command="{Binding ExitApplicationCommand}"
+                                                        Header="Exit" />
                                                 </MenuItem>
                                             </Menu>
 
