@@ -39,9 +39,9 @@ namespace LogViewer
             MatchCollection matches = InternalRegex.Matches(_file.Content);
             foreach (Match match in matches)
             {
-                if (!AllKeyWords.Contains(match.Value))
+                if (!AllKeyWords.Contains(match.Groups[2].Value))
                 {
-                    AllKeyWords.Add(match.Value);
+                    AllKeyWords.Add(match.Groups[2].Value);
                 }
             }
         }
@@ -50,15 +50,13 @@ namespace LogViewer
             string res = new string("");
             if (SelectedKeyWord != null)
             {
-                var lines = Regex.Split(_file.Content, "\r\n|\r|\n");
-
-
-                foreach (string line in lines)
+                string regexString = @"([\r\n|\r|\n])([[:graph:]|[:space:]]*\["+ SelectedKeyWord + @"\][[:graph:]|[:space:]]*)([\r\n|\r|\n])";
+                Regex regex = new Regex(regexString);
+                MatchCollection matches = regex.Matches(_file.Content);
+                foreach (Match match in matches)
                 {
-                    if (line.Contains(SelectedKeyWord))
-                    {
-                        res += line + "\n";
-                    }
+                    var groups = match.Groups;
+                    res += groups[1].Value + "\r\n";
                 }
             }
             return res;
@@ -77,7 +75,7 @@ namespace LogViewer
     public class FileNameFilter : Filter
     {
         public override string Name { get; set; } = "По имени файла";
-        protected override Regex InternalRegex { get; set; } = new Regex(@"([a-zA-Z]*\.cpp)");
+        protected override Regex InternalRegex { get; set; } = new Regex(@"(\[FILE:)([[:graph:]]*\.cpp)");
 
         public override eFilterType Type { get; set; } = eFilterType.eFileName;
 
@@ -90,7 +88,7 @@ namespace LogViewer
     public class LabelFilter : Filter
     {
         public override string Name { get; set; } = "По меткам";
-        protected override Regex InternalRegex { get; set; } = new Regex(@"(\[[A-Z]*\])");
+        protected override Regex InternalRegex { get; set; } = new Regex(@"(\[)([A-Z]*)(\])");
         public override eFilterType Type { get; set; } = eFilterType.eLabel;
 
         public override string Apply(LogFile file)
