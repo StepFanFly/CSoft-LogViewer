@@ -39,28 +39,13 @@ namespace LogViewer
             MatchCollection matches = InternalRegex.Matches(_file.Content);
             foreach (Match match in matches)
             {
-                if (!AllKeyWords.Contains(match.Groups[2].Value))
+                if (!AllKeyWords.Contains(match.Groups["target"].Value))
                 {
-                    AllKeyWords.Add(match.Groups[2].Value);
+                    AllKeyWords.Add(match.Groups["target"].Value);
                 }
             }
         }
-        protected virtual string ApplyFilter()
-        {
-            string res = new string("");
-            if (SelectedKeyWord != null)
-            {
-                string regexString = @"([\r\n|\r|\n])([[:graph:]|[:space:]]*\["+ SelectedKeyWord + @"\][[:graph:]|[:space:]]*)([\r\n|\r|\n])";
-                Regex regex = new Regex(regexString);
-                MatchCollection matches = regex.Matches(_file.Content);
-                foreach (Match match in matches)
-                {
-                    var groups = match.Groups;
-                    res += groups[1].Value + "\r\n";
-                }
-            }
-            return res;
-        }
+        protected abstract string ApplyFilter();
 
         internal void Init(LogFile selLogFile)
         {
@@ -75,7 +60,7 @@ namespace LogViewer
     public class FileNameFilter : Filter
     {
         public override string Name { get; set; } = "По имени файла";
-        protected override Regex InternalRegex { get; set; } = new Regex(@"(\[FILE:)([[:graph:]]*\.cpp)");
+        protected override Regex InternalRegex { get; set; } = new Regex(@"(\[FILE:)(?<target>.*\.cpp)");
 
         public override eFilterType Type { get; set; } = eFilterType.eFileName;
 
@@ -83,17 +68,47 @@ namespace LogViewer
         {
             return ApplyFilter();
         }
+        protected override string ApplyFilter()
+        {
+            string res = new string("");
+            if (SelectedKeyWord != null)
+            {
+                Regex regex = new Regex(@"([\r\n|\r|\n])(?<target>.*\[FILE:" + SelectedKeyWord + @".*)([\r\n|\r|\n])");
+                MatchCollection matches = regex.Matches(_file.Content);
+                foreach (Match match in matches)
+                {
+                    var groups = match.Groups;
+                    res += groups["target"].Value + "\n";
+                }
+            }
+            return res;
+        }
     }
 
     public class LabelFilter : Filter
     {
         public override string Name { get; set; } = "По меткам";
-        protected override Regex InternalRegex { get; set; } = new Regex(@"(\[)([A-Z]*)(\])");
+        protected override Regex InternalRegex { get; set; } = new Regex(@"(\[)(?<target>[A-Z]*)(\])");
         public override eFilterType Type { get; set; } = eFilterType.eLabel;
 
         public override string Apply(LogFile file)
         {
             return ApplyFilter();
+        }
+        protected override string ApplyFilter()
+        {
+            string res = new string("");
+            if (SelectedKeyWord != null)
+            {
+                Regex regex = new Regex(@"([\r\n|\r|\n])(?<target>.*\[" + SelectedKeyWord + @"\].*)([\r\n|\r|\n])");
+                MatchCollection matches = regex.Matches(_file.Content);
+                foreach (Match match in matches)
+                {
+                    var groups = match.Groups;
+                    res += groups["target"].Value + "\r\n";
+                }
+            }
+            return res;
         }
     }
 
