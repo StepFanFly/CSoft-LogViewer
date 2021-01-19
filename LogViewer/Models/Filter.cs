@@ -14,20 +14,23 @@ namespace LogViewer
     eLabel
     }
 
+    public enum eOperationType 
+    {
+    eNone,
+    eUnion,
+    eIntersect,
+    eShielding
+    }
+
     public abstract class Filter : ViewModelBase
     {
-        public void Init(LogFile file)
-        {
-            _file = file;
-            ApplyRegex();
-        }
+      
         public abstract string Name { get; set; }
         public abstract eFilterType Type { get; set; }
-
         public abstract string Apply(LogFile file);
-
-        public string SelectedKeyWord { get; set; }
+        public string SelectedKeyWord { get; set; } 
         public ObservableCollection<string> AllKeyWords { get;  private set; } = new ObservableCollection<string>();
+       
         private void ApplyRegex() {
             if (string.IsNullOrEmpty(_file.Content))
                 return;
@@ -41,6 +44,15 @@ namespace LogViewer
                 }
             }
         }
+
+        public void Init(LogFile file)
+        {
+            _file = file;
+            ApplyRegex();
+        }
+
+
+        public eOperationType SelectedOperationType { get; set; }
 
         private LogFile _file;
         protected abstract Regex InternalRegex { get; set; }
@@ -82,10 +94,19 @@ namespace LogViewer
 
         public static ObservableCollection<Filter> Filters { get; set; } = new ObservableCollection<Filter>();
 
+        public static ObservableCollection<eOperationType> GetOperationTypes() => OperationTypes;
+
+        public static ObservableCollection<eOperationType> OperationTypes { get; set; } = new ObservableCollection<eOperationType>();
+
+
         static FilterFactory()
         {
             Filters.Add(new FileNameFilter());
             Filters.Add(new LabelFilter());
+
+            OperationTypes.Add(eOperationType.eIntersect);
+            OperationTypes.Add(eOperationType.eShielding);
+            OperationTypes.Add(eOperationType.eUnion);
         }
 
         public static Filter Create(eFilterType filterType) 

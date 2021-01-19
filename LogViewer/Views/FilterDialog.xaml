@@ -7,14 +7,17 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:valueConverters="clr-namespace:LogViewer.ValueConverters"
     DataContext="{Binding FilterVM, Source={StaticResource Locator}}"
     mc:Ignorable="d">
 
     <UserControl.Resources>
         <ObjectDataProvider
-            x:Key="AvailableFilters"
-            MethodName="GetInstance"
+            x:Key="AvailableOperTypes"
+            MethodName="GetOperationTypes"
             ObjectType="{x:Type filters:FilterFactory}" />
+        <valueConverters:FilterOperationValueConverter x:Key="FilterOperationConverter" />
+
     </UserControl.Resources>
 
     <materialDesign:DialogHost Identifier="FilterDialog">
@@ -31,7 +34,7 @@
                     SelectedItem="{Binding OuterListBoxSelectedFilter}">
                     <ListBox.ItemTemplate>
 
-                        <DataTemplate DataType="{x:Type filters:Filter}">
+                        <DataTemplate>
                             <DockPanel Height="40">
 
                                 <TextBlock
@@ -47,7 +50,20 @@
                                     materialDesign:HintAssist.HintOpacity=".26"
                                     IsEditable="True"
                                     ItemsSource="{Binding AllKeyWords}"
-                                    SelectedItem="{Binding OuterListBoxSelectedFilter.SelectedKeyWord, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    SelectedIndex="0"
+                                    SelectedItem="{Binding SelectedKeyWord}" />
+
+                                <ComboBox
+                                    Margin="10,0,0,0"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    materialDesign:HintAssist.Hint="Search"
+                                    materialDesign:HintAssist.HintOpacity=".26"
+                                    IsEditable="True"
+                                    ItemsSource="{Binding Source={StaticResource AvailableOperTypes}, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource FilterOperationConverter}}"
+                                    SelectedIndex="0"
+                                    SelectedItem="{Binding SelectedOperationType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource FilterOperationConverter}}" />
+
 
                                 <Button
                                     Width="20"
