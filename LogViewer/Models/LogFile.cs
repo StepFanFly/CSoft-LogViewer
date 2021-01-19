@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using LogViewer.Infrastructure;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
@@ -23,12 +24,18 @@ namespace LogViewer.Models
 
         public string Content { get; set; }
 
-        public async Task ReadFileContentAsync()
+        public async Task ReadFileContentAsync(bool bIsupdate = true)
         {
-            if (File.Exists(FilePath))
-            {
-                Content = await FileUtil.ReadAllTextAsync(FilePath);
-            }
+            await CommandHelper.RunCommandAsync(() => IsBusy, async () =>
+             {
+                 if (File.Exists(FilePath) && bIsupdate)
+                 {
+                     Content = await FileUtil.ReadAllTextAsync(FilePath);
+                 }
+             }, string.IsNullOrEmpty(Content) ? 1000 : 0);
         }
+
+        public bool IsBusy { get; set; } = false;
+
     }
 }

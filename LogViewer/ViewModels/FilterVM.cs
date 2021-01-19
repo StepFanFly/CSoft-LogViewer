@@ -34,7 +34,7 @@ namespace LogViewer
             var Result = await _dlgService.ShowAsync(OuterListBoxSelectedFilter);
             if (Result == true)
             {
-
+                OuterListBoxSelectedFilter = ItmToCreate;
                 OuterListBoxSelectedFilter.Init(ServiceLocator.Current.GetInstance<LogViewerVM>().SelLogFile);
                 Filters.Add(OuterListBoxSelectedFilter);
             }

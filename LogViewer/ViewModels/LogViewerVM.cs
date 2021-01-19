@@ -26,7 +26,7 @@ namespace LogViewer
             Parser = new LogFileParser(SelLogFile);
         }
 
-        public RelayCommand OpenCommand => new RelayCommand(() => { _dlgService.Show(LogFiles); });
+        public RelayCommand OpenCommand => new RelayCommand(() => { _dlgService.ShowAsync(LogFiles); });
 
         public RelayCommand OpenFilterDlgCommand => new RelayCommand(async () =>
         {
