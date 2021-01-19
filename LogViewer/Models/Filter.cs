@@ -25,13 +25,15 @@ namespace LogViewer
 
     public abstract class Filter : ViewModelBase
     {
-      
+
         public abstract string Name { get; set; }
         public abstract eFilterType Type { get; set; }
         public abstract string Apply(LogFile file);
         public string SelectedKeyWord { get; set; }
-        public ObservableCollection<string> AllKeyWords { get;  private set; } = new ObservableCollection<string>();
-       
+        public ObservableCollection<string> AllKeyWords { get; private set; } = new ObservableCollection<string>();
+        public eOperationType SelectedOperationType {get;set;}
+
+
         private void ApplyRegex() {
             if (string.IsNullOrEmpty(_file.Content))
                 return;
