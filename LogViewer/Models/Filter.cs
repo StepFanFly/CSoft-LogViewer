@@ -42,7 +42,7 @@ namespace LogViewer
             }
         }
 
-        private LogFile _file;
+        protected LogFile _file;
         protected abstract Regex InternalRegex { get; set; }
     }
 
@@ -55,10 +55,22 @@ namespace LogViewer
 
         public override string Apply(LogFile file)
         {
-            //Fill KeyWords
-            //TODO: parse File
+            string res = new string("");
+            if (SelectedKeyWord != null) {
+                var lines = Regex.Split(_file.Content, "\r\n|\r|\n");
+                
+                foreach (string line in lines)
+                {
+                    if (line.Contains(SelectedKeyWord))
+                    {
+                        res += line + "\n";
+                    }
+                }
+                //Fill KeyWords
+                //TODO: parse File
+            }
 
-            return string.Empty;
+            return res;
         }
     }
 

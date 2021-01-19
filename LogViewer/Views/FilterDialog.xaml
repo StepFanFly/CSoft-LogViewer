@@ -47,7 +47,7 @@
                                     materialDesign:HintAssist.HintOpacity=".26"
                                     IsEditable="True"
                                     ItemsSource="{Binding AllKeyWords}"
-                                    SelectedItem="{Binding OuterListBoxSelectedFilter.SelectedKeyWord, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    SelectedItem="{Binding SelectedKeyWord, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                 <Button
                                     Width="20"
