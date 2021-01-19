@@ -36,8 +36,6 @@
 
     <Style x:Key="VSWindowStyle" TargetType="{x:Type Window}">
         <Setter Property="WindowStyle" Value="None" />
-        <Setter Property="AllowsTransparency" Value="true" />
-        <Setter Property="Background" Value="Transparent" />
         <Setter Property="ResizeMode" Value="CanResizeWithGrip" />
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
