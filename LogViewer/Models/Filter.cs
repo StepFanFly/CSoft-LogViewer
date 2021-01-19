@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using LogViewer.Models;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -44,17 +45,32 @@ namespace LogViewer
                 }
             }
         }
-
-        public void Init(LogFile file)
+        protected virtual string ApplyFilter()
         {
-            _file = file;
+            string res = new string("");
+            if (SelectedKeyWord != null)
+            {
+                var lines = Regex.Split(_file.Content, "\r\n|\r|\n");
+
+
+                foreach (string line in lines)
+                {
+                    if (line.Contains(SelectedKeyWord))
+                    {
+                        res += line + "\n";
+                    }
+                }
+            }
+            return res;
+        }
+
+        internal void Init(LogFile selLogFile)
+        {
+            _file = selLogFile;
             ApplyRegex();
         }
 
-
-        public eOperationType SelectedOperationType { get; set; }
-
-        private LogFile _file;
+        protected LogFile _file;
         protected abstract Regex InternalRegex { get; set; }
     }
 
@@ -67,10 +83,7 @@ namespace LogViewer
 
         public override string Apply(LogFile file)
         {
-            //Fill KeyWords
-            //TODO: parse File
-
-            return string.Empty;
+            return ApplyFilter();
         }
     }
 
@@ -82,9 +95,7 @@ namespace LogViewer
 
         public override string Apply(LogFile file)
         {
-            //Fill KeyWords
-            //TODO: parse File
-            return string.Empty;
+            return ApplyFilter();
         }
     }
 
