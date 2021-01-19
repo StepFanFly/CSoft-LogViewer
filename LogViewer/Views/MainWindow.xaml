@@ -111,8 +111,8 @@
                                     ToolTip="Filter">
                                     <materialDesign:PackIcon Kind="Filter" />
                                 </Button>
-                                <Label VerticalAlignment="Center" Content="Font size:" />
                                 <ComboBox x:Name="FontSize"
+                                          materialDesign:ComboBoxAssist.ShowSelectedItem="{Binding FontSelectorShowAll}"
                                           materialDesign:HintAssist.IsFloating="true"
                                           materialDesign:HintAssist.Hint="Font size"
                                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"

@@ -41,7 +41,23 @@ namespace LogViewer
                 }
             }
         }
+        protected virtual string ApplyFilter()
+        {
+            string res = new string("");
+            if (SelectedKeyWord != null)
+            {
+                var lines = Regex.Split(_file.Content, "\r\n|\r|\n");
 
+                foreach (string line in lines)
+                {
+                    if (line.Contains(SelectedKeyWord))
+                    {
+                        res += line + "\n";
+                    }
+                }
+            }
+            return res;
+        }
         protected LogFile _file;
         protected abstract Regex InternalRegex { get; set; }
     }
@@ -55,20 +71,7 @@ namespace LogViewer
 
         public override string Apply(LogFile file)
         {
-            string res = new string("");
-            if (SelectedKeyWord != null) {
-                var lines = Regex.Split(_file.Content, "\r\n|\r|\n");
-                
-                foreach (string line in lines)
-                {
-                    if (line.Contains(SelectedKeyWord))
-                    {
-                        res += line + "\n";
-                    }
-                }
-            }
-
-            return res;
+            return ApplyFilter();
         }
     }
 
@@ -80,9 +83,7 @@ namespace LogViewer
 
         public override string Apply(LogFile file)
         {
-            //Fill KeyWords
-            //TODO: parse File
-            return string.Empty;
+            return ApplyFilter();
         }
     }
 
