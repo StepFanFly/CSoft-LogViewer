@@ -14,7 +14,9 @@ namespace LogViewer
 
         public ObservableCollection<Filter> Filters { get; set; } = new ObservableCollection<Filter>() {/* new FileNameFilter { }, new FileNameFilter { }, new FileNameFilter { }, new FileNameFilter { } */};
 
-         public LogFile SelLogFile { get; set; }
+        public LogFile SelLogFile { get; set; }
+
+        public bool FontSelectorShowAll { get; set; } = true;
 
         public string ViewSting { get; set; }
 
