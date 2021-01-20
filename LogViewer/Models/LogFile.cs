@@ -1,8 +1,10 @@
 ﻿using GalaSoft.MvvmLight;
 using LogViewer.Infrastructure;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System;
 
 namespace LogViewer.Models
 {
@@ -22,7 +24,16 @@ namespace LogViewer.Models
         public FileInfo FileInfo { get; set; }
 
 
+        /// <summary>
+        /// This is the content of file
+        /// </summary>
         public string Content { get; set; }
+
+
+        /// <summary>
+        /// This is the slitted string of <see cref="Content"/>
+        /// </summary>
+        public Dictionary<int, string> SplittedContent { get; set; } = new Dictionary<int, string>();
 
         public async Task ReadFileContentAsync(bool bIsupdate = true)
         {
@@ -31,11 +42,35 @@ namespace LogViewer.Models
                  if (File.Exists(FilePath) && bIsupdate)
                  {
                      Content = await FileUtil.ReadAllTextAsync(FilePath);
+
+                     SplitContentString();
                  }
-             }, string.IsNullOrEmpty(Content) ? 1000 : 0);
+             }, !IsLoadedFile ? 1000 : 0);
+        }
+
+
+        private void SplitContentString()
+        {
+            SplittedContent.Clear();
+
+            if (string.IsNullOrEmpty(Content))
+                return;
+
+            //split the string
+            var matches = Regex.Split(Content, @"\r\n");
+
+            int nCounter = 0;
+            Array.ForEach(matches, curSplittedLine => { SplittedContent.Add(nCounter++, curSplittedLine); });
         }
 
         public bool IsBusy { get; set; } = false;
+
+        private bool IsLoadedFile => !string.IsNullOrEmpty(Content);
+
+        public override string ToString()
+        {
+            return FileInfo.Exists ? $"{FileInfo.Name} / {FileInfo.Length/ 1024} КБ / {FileInfo.CreationTime}" : FileInfo.Name;
+        }
 
     }
 }
