@@ -8,13 +8,6 @@ using System;
 
 namespace LogViewer.Models
 {
-
-    //public class SearhField
-    //{
-    //    //public Dictionary<int, string> SplittedContent { get; set; } = new Dictionary<int, string>();
-    //    //public ObservableCollection<Filter> Filters { get; set; }
-    //}
-
     /// <summary>
     /// This is a simple log file
     /// </summary>
