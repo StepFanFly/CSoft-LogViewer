@@ -39,11 +39,14 @@ namespace LogViewer
                             tmp.ToList().ForEach(x => result[x.Key] = x.Value);
                             break;
                         case eOperationType.eIntersect:
-                            //temproray, CHANGE LATER TO CORRECT OPERATION
-                            //tmp.ToList().ForEach(x => result[x.Key] = x.Value);
-                            
+                            Dictionary<int, string> dict = new Dictionary<int, string>();
+                            dict = result.Where(x => tmp.ContainsKey(x.Key)).ToDictionary(x => x.Key, x=>x.Value);
+                            result = dict;
                             break;
                         case eOperationType.eShielding:
+                            //remove from result all pairs from tmp somehow
+                            //dict = result.Where(x => tmp.ContainsKey(x.Key)).ToDictionary(x => x.Key, x => x.Value);
+                            //result = dict;
                             break;
                         default:
                             break;
