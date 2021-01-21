@@ -45,8 +45,7 @@ namespace LogViewer.Infrastructure
             DependencyObject dependencyObject,
             DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
-
-            if (string.IsNullOrEmpty((string)dependencyPropertyChangedEventArgs.NewValue))
+            if (dependencyPropertyChangedEventArgs.NewValue == null)
                 return;
 
             var behavior = dependencyObject as AvalonEditBehaviour;

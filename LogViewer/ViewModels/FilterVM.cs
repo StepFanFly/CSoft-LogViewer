@@ -30,8 +30,8 @@ namespace LogViewer
 
         public RelayCommand ChowFtDlgCommand => new RelayCommand(async () =>
         {
-            OuterListBoxSelectedFilter = FilterFactory.Create(eFilterType.eFileName);
-            var Result = await _dlgService.ShowAsync(OuterListBoxSelectedFilter);
+            ItmToCreate = FilterFactory.Create(eFilterType.eFileName);
+            var Result = await _dlgService.ShowAsync(ItmToCreate);
             if (Result == true)
             {
                 OuterListBoxSelectedFilter = ItmToCreate;
