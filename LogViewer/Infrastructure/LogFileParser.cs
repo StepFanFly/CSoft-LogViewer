@@ -1,6 +1,7 @@
 ﻿using LogViewer.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace LogViewer
 {
@@ -21,8 +22,42 @@ namespace LogViewer
 
         public void ApplyAllFilters( IEnumerable<Filter> filters)
         {
-            foreach (var filter in filters)
-                _parseString = filter.Apply(_file);
+            _parseString = "";
+            //for each filter we call for apply, get dictionary in result
+            //then collapse alldictionaries
+            //or just calculate result on go
+            if (filters.Count() > 0) {
+                Dictionary<int, string> result = new Dictionary<int, string>();
+                eOperationType storedOperation = eOperationType.eUnion;
+                foreach (var filter in filters)
+                {
+                    Dictionary<int, string> tmp = new Dictionary<int, string>();
+                    tmp = filter.ApplyFilter();
+                    switch (storedOperation)
+                    {
+                        case eOperationType.eUnion:
+                            tmp.ToList().ForEach(x => result[x.Key] = x.Value);
+                            break;
+                        case eOperationType.eIntersect:
+                            //temproray, CHANGE LATER TO CORRECT OPERATION
+                            //tmp.ToList().ForEach(x => result[x.Key] = x.Value);
+                            
+                            break;
+                        case eOperationType.eShielding:
+                            break;
+                        default:
+                            break;
+                    }
+
+                    storedOperation = filter.SelectedOperationType;
+                }
+                foreach (var pair in result)
+                    _parseString += pair.Value + "\n";
+            }
+            else
+            {
+                _parseString = _file.Content;
+            }
         }
 
         public LogFile GetLogFile()
