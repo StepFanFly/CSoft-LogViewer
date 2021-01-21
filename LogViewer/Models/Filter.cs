@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using LogViewer.Models;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -25,10 +26,12 @@ namespace LogViewer
 
     public abstract class Filter : ViewModelBase
     {
-
+        /// <summary>
+        /// This is a displayabel name of <see cref="Filter"/>
+        /// </summary>
         public abstract string Name { get; set; }
         public abstract eFilterType Type { get; set; }
-        public abstract string Apply(LogFile file);
+        //public abstract string Apply(LogFile file);
         public string SelectedKeyWord { get; set; }
         public ObservableCollection<string> AllKeyWords { get; private set; } = new ObservableCollection<string>();
         public eOperationType SelectedOperationType {get;set;}
@@ -47,7 +50,7 @@ namespace LogViewer
                 }
             }
         }
-        protected abstract string ApplyFilter();
+        public abstract Dictionary<int, string> ApplyFilter();
 
         internal void Init(LogFile selLogFile)
         {
@@ -56,6 +59,9 @@ namespace LogViewer
         }
 
         protected LogFile _file;
+        /// <summary>
+        /// This is regular expression for finding keywords in input file
+        /// </summary>
         protected abstract Regex InternalRegex { get; set; }
     }
 
@@ -66,21 +72,19 @@ namespace LogViewer
 
         public override eFilterType Type { get; set; } = eFilterType.eFileName;
 
-        public override string Apply(LogFile file)
+        public override Dictionary<int, string> ApplyFilter()
         {
-            return ApplyFilter();
-        }
-        protected override string ApplyFilter()
-        {
-            string res = new string("");
+            Dictionary<int, string> res = new Dictionary<int, string>();
             if (SelectedKeyWord != null)
             {
-                Regex regex = new Regex(@"([\r\n|\r|\n])(?<target>.*\[FILE:" + SelectedKeyWord + @".*)([\r\n|\r|\n])");
-                MatchCollection matches = regex.Matches(_file.Content);
-                foreach (Match match in matches)
+                Regex regex = new Regex(@"(?<target>.*\[FILE:" + SelectedKeyWord + @".*)");
+                foreach (var pair in _file.SplittedContent)
                 {
-                    var groups = match.Groups;
-                    res += groups["target"].Value + "\n";
+                    Match match = regex.Match(pair.Value);
+                    if (match.Success)
+                    {
+                        res.Add(pair.Key, pair.Value);
+                    }
                 }
             }
             return res;
@@ -93,21 +97,19 @@ namespace LogViewer
         protected override Regex InternalRegex { get; set; } = new Regex(@"(\[)(?<target>[A-Z]*)(\])");
         public override eFilterType Type { get; set; } = eFilterType.eLabel;
 
-        public override string Apply(LogFile file)
+        public override Dictionary<int, string> ApplyFilter()
         {
-            return ApplyFilter();
-        }
-        protected override string ApplyFilter()
-        {
-            string res = new string("");
+            Dictionary<int, string> res = new Dictionary<int, string>();
             if (SelectedKeyWord != null)
             {
-                Regex regex = new Regex(@"([\r\n|\r|\n])(?<target>.*\[" + SelectedKeyWord + @"\].*)([\r\n|\r|\n])");
-                MatchCollection matches = regex.Matches(_file.Content);
-                foreach (Match match in matches)
+                Regex regex = new Regex(@"(?<target>.*\[" + SelectedKeyWord + @"\].*)");
+                foreach (var pair in _file.SplittedContent)
                 {
-                    var groups = match.Groups;
-                    res += groups["target"].Value + "\r\n";
+                    Match match = regex.Match(pair.Value);
+                    if (match.Success)
+                    {
+                        res.Add(pair.Key, pair.Value);
+                    }
                 }
             }
             return res;

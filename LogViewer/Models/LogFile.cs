@@ -57,7 +57,7 @@ namespace LogViewer.Models
                 return;
 
             //split the string
-            var matches = Regex.Split(Content, @"\r\n");
+            var matches = Regex.Split(Content, @"[\r\n|\r|\n]");
 
             int nCounter = 0;
             Array.ForEach(matches, curSplittedLine => { SplittedContent.Add(nCounter++, curSplittedLine); });
