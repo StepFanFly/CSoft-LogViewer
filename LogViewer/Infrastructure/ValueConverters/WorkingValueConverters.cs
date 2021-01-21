@@ -12,11 +12,11 @@ namespace LogViewer.ValueConverters
         {
         
 
-            if (value is ObservableCollection<eOperationType> operType) 
+            if (value is ObservableCollection<eOperationType> operTypes) 
             {
                 List<string> strItems = new List<string>();
 
-                foreach (var curType in operType) 
+                foreach (var curType in operTypes) 
                 {
                     if (curType == eOperationType.eUnion)
                         strItems.Add(new string("U"));
@@ -26,18 +26,25 @@ namespace LogViewer.ValueConverters
 
                     if (curType == eOperationType.eShielding)
                         strItems.Add(new string("\\"));
-                }
+
+
+                } 
 
                 return strItems;
-
-              
             }
-            //if(value is Filter filter) 
-            //{
-            //    var type = FilterFactory.GetTypeByName((string)parameter);
-            //    if (type != filter.Type)
-            //        return FilterFactory.Create(filter.Type);
-            //}
+            else if (value is eOperationType operType) 
+            {
+
+                if (eOperationType.eIntersect == operType)
+                    return "ꓵ";
+                else if (eOperationType.eShielding == operType)
+                    return "\\";
+                else if (eOperationType.eUnion == operType)
+                    return "U";
+
+                return string.Empty;
+
+            }
 
             return value;
         }

@@ -23,7 +23,7 @@ namespace LogViewer
         public LogViewerVM()
         {
             LogFiles = new ObservableCollection<LogFile>() { new LogFile { FileInfo = new FileInfo("Super"), FilePath = "sdfsdfsd" } };
-            Parser = new LogFileParser(SelLogFile);
+            Parser = new LogFileParser();
         }
 
         public RelayCommand OpenCommand => new RelayCommand(() => { _dlgService.ShowAsync(LogFiles); });
@@ -35,7 +35,7 @@ namespace LogViewer
             if (dlgRes == true)
             {
                 Filters = ServiceLocator.Current.GetInstance<FilterVM>().Filters;
-                Parser.ApplyAllFilters(Filters);
+                Parser.ApplyAllFilters(SelLogFile, Filters);
                 ViewSting = Parser.GetResult();
             }
         }, () => { return SelLogFile != null; });
@@ -45,6 +45,10 @@ namespace LogViewer
         public RelayCommand<Filter> RemoveFilterCommand => new RelayCommand<Filter>((filter) =>
         {
             Filters.Remove(filter);
+
+            Parser.ApplyAllFilters(SelLogFile, Filters);
+            ViewSting = Parser.GetResult();
+
         });
 
         public RelayCommand<LogFile> ShowLogCommand
@@ -55,8 +59,8 @@ namespace LogViewer
                 {
                 if (selFile != null)
                 {
-                await selFile.ReadFileContentAsync();
-                ViewSting = selFile.Content;
+                    await selFile.ReadFileContentAsync();
+                    ViewSting = selFile.Content;
                 }
                 });
             }
