@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using CommonServiceLocator;
 
 namespace LogViewer
 {
@@ -27,7 +28,7 @@ namespace LogViewer
             //then collapse alldictionaries
             //or just calculate result on go
             if (filters.Count() > 0) {
-                Dictionary<int, string> result = new Dictionary<int, string>();
+                SortedDictionary<int, string> result = new SortedDictionary<int, string>();
                 eOperationType storedOperation = eOperationType.eUnion;
                 foreach (var filter in filters)
                 {
@@ -41,7 +42,7 @@ namespace LogViewer
                         case eOperationType.eIntersect:
                             Dictionary<int, string> dict = new Dictionary<int, string>();
                             dict = result.Where(x => tmp.ContainsKey(x.Key)).ToDictionary(x => x.Key, x=>x.Value);
-                            result = dict;
+                            result = (SortedDictionary<int, string>)dict.OrderBy(val=> val.Key);
                             break;
                         case eOperationType.eShielding:
                             //remove from result all pairs from tmp somehow
@@ -61,6 +62,8 @@ namespace LogViewer
             {
                 _parseString = _file.Content;
             }
+
+            ServiceLocator.Current.GetInstance<LogViewerVM>().ViewSting = _parseString;
         }
 
         public LogFile GetLogFile()
