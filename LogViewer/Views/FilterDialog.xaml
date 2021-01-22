@@ -50,7 +50,6 @@
                                     materialDesign:HintAssist.HintOpacity=".26"
                                     IsEditable="True"
                                     ItemsSource="{Binding AllKeyWords}"
-                                    SelectedIndex="0"
                                     SelectedItem="{Binding SelectedKeyWord}" />
 
                                 <ComboBox
@@ -61,7 +60,6 @@
                                     materialDesign:HintAssist.HintOpacity=".26"
                                     IsEditable="True"
                                     ItemsSource="{Binding Source={StaticResource AvailableOperTypes}, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource FilterOperationConverter}}"
-                                    SelectedIndex="0"
                                     SelectedItem="{Binding SelectedOperationType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource FilterOperationConverter}}" />
 
 

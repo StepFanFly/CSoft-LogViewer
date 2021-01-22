@@ -11,12 +11,13 @@ namespace LogViewer
 
         public void AddFilters(ObservableCollection<Filter> filters)
         {
-            Filters.AsEnumerable().Concat(filters);
+            Filters = filters;
+            OuterListBoxSelectedFilter = null;
         }
 
         private readonly IDialogService _dlgService = ServiceLocator.Current.GetInstance<IDialogService>();
 
-        public ObservableCollection<Filter> Filters { get; set; } = new ObservableCollection<Filter>();
+        public ObservableCollection<Filter> Filters { get; set; } 
 
 
         public Filter OuterListBoxSelectedFilter { get; set; }
@@ -30,8 +31,8 @@ namespace LogViewer
 
         public RelayCommand ChowFtDlgCommand => new RelayCommand(async () =>
         {
-            OuterListBoxSelectedFilter = FilterFactory.Create(eFilterType.eFileName);
-            var Result = await _dlgService.ShowAsync(OuterListBoxSelectedFilter);
+            ItmToCreate = FilterFactory.Create(eFilterType.eFileName);
+            var Result = await _dlgService.ShowAsync(ItmToCreate);
             if (Result == true)
             {
                 OuterListBoxSelectedFilter = ItmToCreate;
