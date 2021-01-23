@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using CommonServiceLocator;
 using LogViewer.Models;
 using LogViewer.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LogViewer
 {
@@ -17,7 +18,9 @@ namespace LogViewer
 
     public class DialogService : IDialogService
     {
-
+        public DialogService()
+        {
+        }
         public async Task<bool> ShowAsync(object content)
         {
             bool bRes = false;
@@ -48,7 +51,8 @@ namespace LogViewer
 
             if (content is ObservableCollectionExt<Filter> filters)
             {
-                ServiceLocator.Current.GetInstance<FilterVM>().AddFilters(filters);
+               App.Host.Services.GetRequiredService<FilterVM>().AddFilters(filters);
+              //  ServiceLocator.Current.GetInstance<FilterVM>().AddFilters(filters);
                 var view = new FilterDialog();
                 //show the dialog
                 var result = await DialogHost.Show(view, "RootDialog", null, (sender, eventArgs) => { bRes = (bool)eventArgs.Parameter; });

@@ -1,5 +1,5 @@
-﻿using GalaSoft.MvvmLight;
-using LogViewer.Models;
+﻿using LogViewer.Models;
+using LogViewer.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -99,7 +99,7 @@ namespace LogViewer
         /// </summary>
         private void ApplyRegex()
         {
-            if (string.IsNullOrEmpty(_field.Content))
+            if (string.IsNullOrEmpty(_field?.Content))
                 return;
 
             MatchCollection matches = InternalRegex.Matches(_field.Content);

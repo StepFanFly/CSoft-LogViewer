@@ -1,8 +1,9 @@
-﻿using CommonServiceLocator;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+﻿
+
 using LogViewer.Infrastructure;
 using LogViewer.Models;
+using LogViewer.ViewModels.Base;
+using Microsoft.Extensions.DependencyInjection;
 using System.IO;
 using System.Windows;
 
@@ -101,7 +102,7 @@ namespace LogViewer
 
         #endregion
 
-        private readonly IDialogService _dlgService = ServiceLocator.Current.GetInstance<IDialogService>();
+        private IDialogService _dlgService => App.Host.Services.GetRequiredService<IDialogService>();
 
         private readonly Iparser<SearhField> Parser;
     }

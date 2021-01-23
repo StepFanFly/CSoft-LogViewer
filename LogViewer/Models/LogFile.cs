@@ -1,11 +1,11 @@
-﻿using GalaSoft.MvvmLight;
-using LogViewer.Infrastructure;
+﻿using LogViewer.Infrastructure;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using LogViewer.ViewModels.Base;
 
 namespace LogViewer.Models
 {
@@ -38,7 +38,8 @@ namespace LogViewer.Models
         {
             get => content; set 
             {
-                Set(ref content, value);
+                content = value;
+              
                 ViewSting = content;
                 SplitContentString();
             } 
@@ -125,7 +126,7 @@ namespace LogViewer.Models
         /// <summary>
         /// Name of Node
         /// </summary>
-        public override string NodeName { get { return FileInfo == null ? nodeName : FileInfo.Name; } set => Set(ref nodeName, value); }
+        public override string NodeName { get { return FileInfo == null ? nodeName : FileInfo.Name; } set => nodeName = value; }
 
         /// <summary>
         /// Indicates loading process
