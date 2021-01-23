@@ -1,7 +1,9 @@
 ﻿using CommonServiceLocator;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+
+
 using LogViewer.Infrastructure;
+using LogViewer.ViewModels.Base;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LogViewer
 {
@@ -11,6 +13,12 @@ namespace LogViewer
     /// </summary>
     public class FilterVM : ViewModelBase
     {
+
+
+        public FilterVM(IDialogService dlgService)
+        {
+            _dlgService = dlgService;
+        }
 
         #region Public fields
 
@@ -45,7 +53,7 @@ namespace LogViewer
             if (Result == true)
             {
                 OuterListBoxSelectedFilter = ItmToCreate;
-                OuterListBoxSelectedFilter.Init(ServiceLocator.Current.GetInstance<LogViewerVM>().SelSearchField);
+                OuterListBoxSelectedFilter.Init(App.Host.Services.GetRequiredService<LogViewerVM>().SelSearchField);
                 Filters.Add(OuterListBoxSelectedFilter);
             }
             else
@@ -66,6 +74,6 @@ namespace LogViewer
 
         #endregion
 
-        private readonly IDialogService _dlgService = ServiceLocator.Current.GetInstance<IDialogService>();
+        private readonly IDialogService _dlgService;
     }
 }
