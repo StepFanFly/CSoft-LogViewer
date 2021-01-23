@@ -1,8 +1,8 @@
 ﻿using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using LogViewer.Infrastructure;
 using LogViewer.Models;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
 
@@ -10,70 +10,99 @@ namespace LogViewer
 {
     public class LogViewerVM : ViewModelBase
     {
-        public ObservableCollection<LogFile> LogFiles { get; set; } = new ObservableCollection<LogFile>() {  /*new LogFile { FileInfo = new FileInfo("Test"), FilePath ="sdfsdfsd"}*/ };
+        #region Public fields
+        /// <summary>
+        /// Collection of search field which also may be LogFile
+        /// </summary>
+        public ObservableCollectionExt<SearhField> LogFiles { get; set; } = new ObservableCollectionExt<SearhField>() {  /*new LogFile { FileInfo = new FileInfo("Test"), FilePath ="sdfsdfsd"}*/ };
 
-        public ObservableCollection<Filter> Filters { get; set; } = new ObservableCollection<Filter>() {/* new FileNameFilter { }, new FileNameFilter { }, new FileNameFilter { }, new FileNameFilter { } */};
-
-        public LogFile SelLogFile { get; set; }
+        /// <summary>
+        /// This is sel field
+        /// </summary>
+        public SearhField SelSearchField { get; set; }
 
         public bool FontSelectorShowAll { get; set; } = true;
+        #endregion
 
-        public string ViewSting { get; set; }
-
+        #region Constructor
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public LogViewerVM()
         {
-            LogFiles = new ObservableCollection<LogFile>() { new LogFile { FileInfo = new FileInfo("Super"), FilePath = "sdfsdfsd" } };
+            var test = new LogFile { NodeName = "Super", FileInfo = new FileInfo("Super"), FilePath = "sdfsdfsd" };
+            test.ChildSearchedFields.Add(new SearhField() { NodeName = "Child 1",Content = "bla bla bla 1", Parent = test });
+            test.ChildSearchedFields.Add(new SearhField() { NodeName = "Child 2", Content = "bla bla bla 2", Parent = test });
+
+            LogFiles.Add(test);
             Parser = new LogFileParser();
         }
+        #endregion
 
-        public RelayCommand OpenCommand => new RelayCommand(() => { _dlgService.ShowAsync(LogFiles); });
+        #region Relay Commands
+        /// <summary>
+        /// Open dialog and choose selected files
+        /// </summary>
+        public RelayCommand OpenAndChooseLogFielsCommand => new RelayCommand(() => { _dlgService.ShowAsync(LogFiles); });
 
+        /// <summary>
+        /// Invoke filters dialog and apply all of their to <see cref="SelSearchField"/>
+        /// </summary>
         public RelayCommand OpenFilterDlgCommand => new RelayCommand(async () =>
         {
-            var dlgRes = await _dlgService.ShowAsync(Filters);
+            var dlgRes = await _dlgService.ShowAsync(SelSearchField.Filters);
 
             if (dlgRes == true)
             {
-                Filters = ServiceLocator.Current.GetInstance<FilterVM>().Filters;
-                Parser.ApplyAllFilters(SelLogFile, Filters);
-                ViewSting = Parser.GetResult();
+                Parser.ApplyAllFilters(SelSearchField, SelSearchField.Filters);
+                SelSearchField.ViewSting = Parser.GetResult();
             }
-        }, () => { return SelLogFile != null; });
+        }, () => { return SelSearchField != null; });
 
+
+        /// <summary>
+        /// Removes <see cref="SelSearchField"/> from list of <see cref="LogFiles"/>
+        /// </summary>
         public RelayCommand<LogFile> RemoveSelLogCommand => new RelayCommand<LogFile>(logFileToRemove => LogFiles.Remove(logFileToRemove));
 
+        /// <summary>
+        /// Remove selected filter from <see cref="SelSearchField"/>
+        /// </summary>
         public RelayCommand<Filter> RemoveFilterCommand => new RelayCommand<Filter>((filter) =>
         {
-            Filters.Remove(filter);
-
-            Parser.ApplyAllFilters(SelLogFile, Filters);
-            ViewSting = Parser.GetResult();
-
+            SelSearchField.Filters.Remove(filter);
+            Parser.ApplyAllFilters(SelSearchField, SelSearchField.Filters);
+            SelSearchField.ViewSting = Parser.GetResult();
         });
 
-        public RelayCommand<LogFile> ShowLogCommand
+        /// <summary>
+        /// Start the reading log file from file
+        /// </summary>
+        public RelayCommand LoadLogFromFileCommand
         {
             get
             {
-                return new RelayCommand<LogFile>(async (selFile) =>
+                return new RelayCommand(async () =>
                 {
-                if (selFile != null)
-                {
-                    await selFile.ReadFileContentAsync();
-                    ViewSting = selFile.Content;
-                }
-                });
+                   await ((LogFile)SelSearchField).ReadFileContentAsync();
+                   SelSearchField.ViewSting = SelSearchField.Content;
+
+                }, () => { return SelSearchField != null && SelSearchField is LogFile; });
             }
         }
 
-
+        /// <summary>
+        /// Closes application
+        /// </summary>
         public RelayCommand ExitApplicationCommand  => new RelayCommand(() =>
         {
             if (Application.Current.MainWindow != null) Application.Current.MainWindow.Close();
         });
 
+        #endregion
+
         private readonly IDialogService _dlgService = ServiceLocator.Current.GetInstance<IDialogService>();
 
-        private readonly Iparser<LogFile> Parser;
+        private readonly Iparser<SearhField> Parser;
     }
 }

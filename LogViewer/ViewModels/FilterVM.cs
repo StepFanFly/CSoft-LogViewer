@@ -1,33 +1,42 @@
 ﻿using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using System.Collections.ObjectModel;
-using System.Linq;
+using LogViewer.Infrastructure;
 
 namespace LogViewer
 {
+
+    /// <summary>
+    /// This is simple filter VM
+    /// </summary>
     public class FilterVM : ViewModelBase
     {
 
-        public void AddFilters(ObservableCollection<Filter> filters)
-        {
-            Filters = filters;
-            OuterListBoxSelectedFilter = null;
-        }
+        #region Public fields
 
-        private readonly IDialogService _dlgService = ServiceLocator.Current.GetInstance<IDialogService>();
+        /// <summary>
+        /// New instance of filter
+        /// </summary>
+        public Filter ItmToCreate { get; set; }
 
-        public ObservableCollection<Filter> Filters { get; set; } 
-
-
+        /// <summary>
+        /// Selected filter
+        /// </summary>
         public Filter OuterListBoxSelectedFilter { get; set; }
+
+        /// <summary>
+        /// Collection of filters
+        /// </summary>
+        public ObservableCollectionExt<Filter> Filters { get; set; }
+
+        #endregion
+
+        #region Relay Commands
 
         public RelayCommand<Filter> RemoveFilterCommand => new RelayCommand<Filter>((filter) =>
         {
             Filters.Remove(filter);
         });
-
-        public Filter ItmToCreate { get; set; }
 
         public RelayCommand ChowFtDlgCommand => new RelayCommand(async () =>
         {
@@ -36,12 +45,27 @@ namespace LogViewer
             if (Result == true)
             {
                 OuterListBoxSelectedFilter = ItmToCreate;
-                OuterListBoxSelectedFilter.Init(ServiceLocator.Current.GetInstance<LogViewerVM>().SelLogFile);
+                OuterListBoxSelectedFilter.Init(ServiceLocator.Current.GetInstance<LogViewerVM>().SelSearchField);
                 Filters.Add(OuterListBoxSelectedFilter);
             }
-            else {
+            else
+            {
                 OuterListBoxSelectedFilter = null;
             }
         });
+
+        #endregion
+
+        #region Methods
+
+        public void AddFilters(ObservableCollectionExt<Filter> filters)
+        {
+            Filters = filters;
+            OuterListBoxSelectedFilter = null;
+        }
+
+        #endregion
+
+        private readonly IDialogService _dlgService = ServiceLocator.Current.GetInstance<IDialogService>();
     }
 }
