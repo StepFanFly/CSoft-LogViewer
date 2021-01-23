@@ -12,11 +12,12 @@
     xmlns:models="clr-namespace:LogViewer.Models"
     xmlns:valueConverters="clr-namespace:LogViewer.ValueConverters"
     Title="MainWindow"
-    Width="800"
-    Height="450"
+    Width="900"
+    Height="500"
     DataContext="{Binding LogVM, Source={StaticResource Locator}}"
     Icon="/Views/mainicon.ico"
     Style="{StaticResource VSWindowStyle}"
+    WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Window.Resources>
         <valueConverters:BooleanToVisibilityValueConverter x:Key="BooleanToVisibilityConverter" />
@@ -25,7 +26,7 @@
         <materialDesign:DrawerHost>
             <DockPanel>
                 <StatusBar DockPanel.Dock="Bottom">
-                    <TextBlock Text="{Binding SelLogFile}" />
+                    <TextBlock Text="{Binding SelSearchField}" />
                     <StatusBarItem HorizontalAlignment="Right">
                         <ResizeGrip Opacity="0.75" />
                     </StatusBarItem>
@@ -43,37 +44,32 @@
                         VerticalAlignment="Stretch"
                         ResizeBehavior="PreviousAndNext"
                         ResizeDirection="Columns" />
-                    <ListBox
+                    <TreeView
                         x:Name="LogFiles"
                         Grid.Column="0"
                         HorizontalContentAlignment="Stretch"
-                        ItemsSource="{Binding LogFiles}"
-                        SelectedItem="{Binding SelLogFile}"
-                        SelectionMode="Single">
+                        ItemsSource="{Binding LogFiles}">
+
+                        <i:Interaction.Behaviors>
+                            <attached:BindableSelectedItemBehavior SelectedItem="{Binding SelSearchField, Mode=TwoWay}" />
+                        </i:Interaction.Behaviors>
 
                         <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectionChanged">
-                                <i:InvokeCommandAction Command="{Binding DataContext.ShowLogCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" CommandParameter="{Binding SelLogFile}" />
+                            <i:EventTrigger EventName="SelectedItemChanged">
+                                <i:InvokeCommandAction Command="{Binding DataContext.LoadLogFromFileCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
 
-                        <ListBox.ItemTemplate>
-                            <DataTemplate DataType="{x:Type models:LogFile}">
-
-                                <Grid Height="40">
+                        <TreeView.Resources>
+                            <HierarchicalDataTemplate DataType="{x:Type models:LogFile}" ItemsSource="{Binding ChildSearchedFields}">
+                                <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="auto" />
                                         <ColumnDefinition Width="auto" />
-
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock
-                                        Grid.Column="0"
-                                        VerticalAlignment="Center"
-                                        FontWeight="Bold"
-                                        Text="{Binding FileInfo.Name}" />
-
+                                    <TextBlock Grid.Column="0" Text="{Binding NodeName}" />
 
                                     <ProgressBar
                                         Grid.Column="1"
@@ -97,11 +93,17 @@
                                         Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
                                         <materialDesign:PackIcon Foreground="Gray" Kind="Close" />
                                     </Button>
-
                                 </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+
+                            </HierarchicalDataTemplate>
+
+                            <HierarchicalDataTemplate DataType="{x:Type models:SearhField}" ItemsSource="{Binding ChildSearchedFields}">
+                                <TextBlock Grid.Column="0" Text="{Binding NodeName}" />
+                            </HierarchicalDataTemplate>
+                        </TreeView.Resources>
+
+
+                    </TreeView>
 
                     <DockPanel Grid.Column="3">
                         <ToolBarTray DockPanel.Dock="Top">
@@ -129,7 +131,7 @@
                         </ToolBarTray>
 
 
-                        <ListView DockPanel.Dock="Top" ItemsSource="{Binding LogVM.Filters, Source={StaticResource Locator}}">
+                        <ListView DockPanel.Dock="Top" ItemsSource="{Binding LogVM.SelSearchField.Filters, Source={StaticResource Locator}}">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <materialDesign:Chip
@@ -165,7 +167,7 @@
                                 </ContextMenu>
                             </avalonEdit:TextEditor.ContextMenu>
                             <i:Interaction.Behaviors>
-                                <attached:AvalonEditBehaviour GiveMeTheText="{Binding ViewSting, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <attached:AvalonEditBehaviour GiveMeTheText="{Binding SelSearchField.ViewSting, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </i:Interaction.Behaviors>
                             <!--<i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseWheel">

@@ -115,7 +115,7 @@
                                                 <MenuItem Height="25" Header="File">
                                                     <MenuItem
                                                         Height="25"
-                                                        Command="{Binding OpenCommand}"
+                                                        Command="{Binding OpenAndChooseLogFielsCommand}"
                                                         Header="Open files..." />
                                                     <Separator />
                                                     <MenuItem

@@ -10,8 +10,6 @@ namespace LogViewer.ValueConverters
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-        
-
             if (value is ObservableCollection<eOperationType> operTypes) 
             {
                 List<string> strItems = new List<string>();
@@ -26,8 +24,6 @@ namespace LogViewer.ValueConverters
 
                     if (curType == eOperationType.eShielding)
                         strItems.Add(new string("\\"));
-
-
                 } 
 
                 return strItems;

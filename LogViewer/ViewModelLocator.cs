@@ -26,8 +26,10 @@ namespace LogViewer
 
                 SimpleIoc.Default.Register<IDialogService, DialogService>();
             }
+           
         }
 
+        
         public LogViewerVM LogVM => ServiceLocator.Current.GetInstance<LogViewerVM>();
         public FilterVM FilterVM => ServiceLocator.Current.GetInstance<FilterVM>();
 

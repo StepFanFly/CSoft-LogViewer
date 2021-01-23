@@ -29,6 +29,5 @@ namespace LogViewer.Infrastructure
                 propertyInfo.SetValue(target, false);
             }
         }
-
     }
 }
