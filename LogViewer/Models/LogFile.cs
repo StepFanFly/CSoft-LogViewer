@@ -149,10 +149,41 @@ namespace LogViewer.Models
                     {
                         Content = await FileUtil.ReadAllTextAsync(FilePath);
 
-                        //TODO: create search fields
-                        //example
-                        ChildSearchedFields.AddUnique(new SearhField() { NodeName = "Child 1", Content = "bla bla bla 1", Parent = this });
-                        ChildSearchedFields.AddUnique(new SearhField() { NodeName = "Child 2", Content = "bla bla bla 2", Parent = this });
+                        Dictionary<int, string> SplittedString = new Dictionary<int, string>();
+                        var matches = Regex.Split(Content, @"[\r\n|\r|\n]");
+                        int nCounter = 0;
+                        foreach (var match in matches)
+                        {
+                            if (!string.IsNullOrEmpty(match))
+                            {
+                                SplittedString.Add(nCounter++, match);
+                            }
+                        }
+                        List<int> starts = new List<int>();
+                        foreach(var pair in SplittedString)
+                        {
+                            Regex zoneStart = new Regex(@".*log started");
+                            var match = zoneStart.Match(pair.Value);
+                            if (match.Success)
+                                starts.Add(pair.Key);
+                        }
+                        starts.Add(nCounter+1);
+
+                        for (int i = 0; i < starts.Count-1; ++i)
+                        {
+                            int from = starts[i] + 3;
+                            int to = starts[i + 1] - 1;
+
+                            string name = SplittedString[starts[i] + 1];
+                            string content = "";
+
+                            for (int j = from; j < to; ++j)
+                            {
+                                content += SplittedString[j] + "\n";
+                            }
+                            ChildSearchedFields.AddUnique(new SearhField() { NodeName = name, Content = content, Parent = this });
+
+                        }
                     });
                 }
             }, !IsLoadedFile ? 1000 : 0);
