@@ -6,7 +6,8 @@ using System.IO;
 using System.Threading.Tasks;
 using CommonServiceLocator;
 using LogViewer.Models;
-using System.Linq;
+using LogViewer.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LogViewer
 {
@@ -17,13 +18,18 @@ namespace LogViewer
 
     public class DialogService : IDialogService
     {
-
+        public DialogService()
+        {
+        }
         public async Task<bool> ShowAsync(object content)
         {
             bool bRes = false;
 
-            if (content is ObservableCollection<LogFile> contentWithLogFiles)
+            if (content is ObservableCollection<SearhField> contentWithLogFiles) 
             {
+                //TODO: need to dependency injection
+                FileReaderActor reader = new FileReaderActor();
+
                 OpenFileDialog dialog = new OpenFileDialog();
                 dialog.Multiselect = true;
                 dialog.Filter = "Log files (*.log)|*.log|All files (*.*)|*.*";
@@ -31,32 +37,22 @@ namespace LogViewer
                 {
                     foreach (string filename in dialog.FileNames)
                     {
-                        bool bHasAlereadyLoaded = contentWithLogFiles.Any((logfile => { return logfile.FilePath.Equals(filename); }));
-                        if (bHasAlereadyLoaded)
-                            continue;
                         var currFile = new FileInfo(filename);
                         if (currFile.Exists)
                         {
                             var newFile = new LogFile { FileInfo = currFile, FilePath = filename };
                             contentWithLogFiles.Add(newFile);
+                            _ = reader.SendAsync(newFile);
                         }
                     }
-
-                    //TODO:need to refactor
-                    foreach (var newFile in contentWithLogFiles)
-                    {
-                        if(string.IsNullOrEmpty(newFile.Content))
-                         _ = Task.Run(async () => await newFile.ReadFileContentAsync());
-                    
-                    }
-
                     return true;
                 }
             }
 
-            if (content is ObservableCollection<Filter> filters)
+            if (content is ObservableCollectionExt<Filter> filters)
             {
-                ServiceLocator.Current.GetInstance<FilterVM>().AddFilters(filters);
+               App.Host.Services.GetRequiredService<FilterVM>().AddFilters(filters);
+              //  ServiceLocator.Current.GetInstance<FilterVM>().AddFilters(filters);
                 var view = new FilterDialog();
                 //show the dialog
                 var result = await DialogHost.Show(view, "RootDialog", null, (sender, eventArgs) => { bRes = (bool)eventArgs.Parameter; });

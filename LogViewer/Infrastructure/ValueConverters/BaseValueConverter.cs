@@ -106,7 +106,5 @@ namespace LogViewer.ValueConverters
             System.Globalization.CultureInfo culture);
 
         #endregion
-
-
     }
 }

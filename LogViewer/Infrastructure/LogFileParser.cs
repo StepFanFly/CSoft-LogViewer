@@ -1,22 +1,20 @@
 ﻿using LogViewer.Models;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq;
-using CommonServiceLocator;
 
 
 namespace LogViewer
 {
-    interface Iparser<T> where T : LogFile
+    interface Iparser<T> where T : SearhField
     {
-        void ApplyAllFilters(LogFile file, IEnumerable<Filter> filters);
+        void ApplyAllFilters(SearhField file, IEnumerable<Filter> filters);
         string GetResult();
     }
 
-    class LogFileParser : Iparser<LogFile>
+    class LogFileParser : Iparser<SearhField>
     {
      
-        public void ApplyAllFilters(LogFile file, IEnumerable<Filter> filters)
+        public void ApplyAllFilters(SearhField file, IEnumerable<Filter> filters)
         {
             _parseString = "";
             //for each filter we call for apply, get dictionary in result
@@ -57,10 +55,7 @@ namespace LogViewer
             {
                 _parseString = file.Content;
             }
-
         }
-
-
 
         public string GetResult()
         {
