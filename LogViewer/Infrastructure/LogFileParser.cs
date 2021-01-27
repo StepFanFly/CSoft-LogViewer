@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-
 namespace LogViewer
 {
     interface Iparser<T> where T : SearhField
