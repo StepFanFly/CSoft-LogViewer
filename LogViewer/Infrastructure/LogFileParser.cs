@@ -37,9 +37,9 @@ namespace LogViewer
                             result = new SortedDictionary<int, string>(dict);
                             break;
                         case eOperationType.eShielding:
-                            //remove from result all pairs from tmp somehow
-                            //dict = result.Where(x => tmp.ContainsKey(x.Key)).ToDictionary(x => x.Key, x => x.Value);
-                            //result = dict;
+                            var keyToRemove = result.Keys.Where(x => (tmp.ContainsKey(x))).ToList();
+                            foreach (var key in keyToRemove)
+                                result.Remove(key);
                             break;
                         default:
                             break;
