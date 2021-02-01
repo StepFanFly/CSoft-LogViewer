@@ -22,7 +22,7 @@
     <Window.Resources>
         <valueConverters:BooleanToVisibilityValueConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
-    <materialDesign:DialogHost Identifier="RootDialog">
+    <materialDesign:DialogHost DialogTheme="Inherit" Identifier="RootDialog">
         <materialDesign:DrawerHost>
             <DockPanel>
                 <StatusBar DockPanel.Dock="Bottom">
@@ -59,7 +59,6 @@
                                 <i:InvokeCommandAction Command="{Binding DataContext.LoadLogFromFileCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
-
                         <TreeView.Resources>
                             <HierarchicalDataTemplate DataType="{x:Type models:LogFile}" ItemsSource="{Binding ChildSearchedFields}">
                                 <Grid>
@@ -127,6 +126,7 @@
                                     <ComboBoxItem Content="14" />
                                     <ComboBoxItem Content="16" />
                                 </ComboBox>
+                                <ToggleButton Margin="8,4,16,4" IsChecked="{Binding IsDarkTheme}" />
                             </ToolBar>
                         </ToolBarTray>
 
@@ -157,9 +157,11 @@
                         </ListView>
 
                         <avalonEdit:TextEditor
+                            Background="Transparent"
                             DockPanel.Dock="Bottom"
                             FontSize="{Binding Text, ElementName=FontSize}"
-                            LineNumbersForeground="Teal"
+                            Foreground="{DynamicResource TextEditorForegtound}"
+                            LineNumbersForeground="{DynamicResource TextEditorLineNumbersForeground}"
                             ShowLineNumbers="True">
                             <avalonEdit:TextEditor.ContextMenu>
                                 <ContextMenu>

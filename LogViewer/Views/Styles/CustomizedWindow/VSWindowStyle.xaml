@@ -1,13 +1,8 @@
 ﻿<ResourceDictionary
     x:Class="LogViewer.Views.Styles.CustomizedWindow.VSWindowStyle"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:LogViewer.Views.Styles.CustomizedWindow">
-    <SolidColorBrush x:Key="TitleBarBackgroundBrush" Color="#EFEFF2" />
-    <SolidColorBrush x:Key="VSWindowBorderBrush" Color="#007ACC" />
-    <SolidColorBrush x:Key="VSWindowBorderBrushInactive" Color="#999999" />
-    <SolidColorBrush x:Key="VSWindowStatusForeground" Color="#FFFFFF" />
-    <SolidColorBrush x:Key="VSWindowStatusForegroundInactive" Color="#FFFFFF" />
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
 
     <Style x:Key="VSWindowStyleTitleBarButton" TargetType="{x:Type Button}">
         <Setter Property="Focusable" Value="false" />
@@ -24,7 +19,7 @@
                             <Setter TargetName="PART_border" Property="Opacity" Value="0.7" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="PART_border" Property="Background" Value="{StaticResource VSWindowBorderBrush}" />
+                            <Setter TargetName="PART_border" Property="Background" Value="{DynamicResource VSWindowBorderBrush}" />
                             <Setter TargetName="PART_border" Property="Opacity" Value="1" />
                             <Setter Property="Foreground" Value="#FFF" />
                         </Trigger>
@@ -66,8 +61,8 @@
                                 Width="Auto"
                                 Height="Auto"
                                 Padding="0"
-                                Background="#EFEFF2"
-                                BorderBrush="{StaticResource VSWindowBorderBrush}"
+                                Background="{DynamicResource TitleBarBackgroundBrush}"
+                                BorderBrush="{DynamicResource VSWindowBorderBrush}"
                                 BorderThickness="1">
                                 <DockPanel
                                     HorizontalAlignment="Stretch"
@@ -76,7 +71,7 @@
 
                                     <Border
                                         x:Name="TitleBar"
-                                        Background="{StaticResource TitleBarBackgroundBrush}"
+                                        Background="{DynamicResource TitleBarBackgroundBrush}"
                                         BorderThickness="0"
                                         DockPanel.Dock="Top">
                                         <Grid Height="32">
@@ -106,7 +101,7 @@
                                                 Margin="0,0,0,0"
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Center"
-                                                Background="{StaticResource TitleBarBackgroundBrush}"
+                                                Background="{DynamicResource TitleBarBackgroundBrush}"
                                                 DockPanel.Dock="Top"
                                                 FontFamily="Segoe UI"
                                                 FontSize="12"
@@ -132,7 +127,7 @@
                                                 Height="26"
                                                 VerticalAlignment="Top"
                                                 Click="MinButtonClick"
-                                                Style="{StaticResource VSWindowStyleTitleBarButton}"
+                                                Style="{DynamicResource VSWindowStyleTitleBarButton}"
                                                 WindowChrome.IsHitTestVisibleInChrome="True">
                                                 <Grid MaxWidth="9" MaxHeight="9">
                                                     <Path
@@ -150,7 +145,7 @@
                                                 Height="26"
                                                 VerticalAlignment="Top"
                                                 Click="MaxButtonClick"
-                                                Style="{StaticResource VSWindowStyleTitleBarButton}"
+                                                Style="{DynamicResource VSWindowStyleTitleBarButton}"
                                                 WindowChrome.IsHitTestVisibleInChrome="True">
                                                 <Grid MaxWidth="9" MaxHeight="9">
                                                     <Path
@@ -169,7 +164,7 @@
                                                 Height="26"
                                                 VerticalAlignment="Top"
                                                 Click="CloseButtonClick"
-                                                Style="{StaticResource VSWindowStyleTitleBarButton}"
+                                                Style="{DynamicResource VSWindowStyleTitleBarButton}"
                                                 WindowChrome.IsHitTestVisibleInChrome="True">
                                                 <Grid MaxWidth="9" MaxHeight="9">
                                                     <Path
@@ -203,7 +198,7 @@
                             </Setter>
                         </Trigger>
                         <Trigger Property="IsActive" Value="False">
-                            <Setter TargetName="PART_Border" Property="BorderBrush" Value="{StaticResource VSWindowBorderBrushInactive}" />
+                            <Setter TargetName="PART_Border" Property="BorderBrush" Value="{DynamicResource VSWindowBorderBrushInactive}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -211,12 +206,12 @@
         </Setter>
         <Style.Resources>
             <Style TargetType="{x:Type StatusBar}">
-                <Setter Property="Foreground" Value="{StaticResource VSWindowStatusForeground}" />
-                <Setter Property="Background" Value="{StaticResource VSWindowBorderBrush}" />
+                <Setter Property="Foreground" Value="{DynamicResource VSWindowStatusForeground}" />
+                <Setter Property="Background" Value="{DynamicResource VSWindowBorderBrush}" />
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource AncestorType=Window}}" Value="False">
-                        <Setter Property="Foreground" Value="{StaticResource VSWindowBorderBrushInactive}" />
-                        <Setter Property="Background" Value="{StaticResource VSWindowBorderBrushInactive}" />
+                        <Setter Property="Foreground" Value="{DynamicResource VSWindowBorderBrushInactive}" />
+                        <Setter Property="Background" Value="{DynamicResource VSWindowBorderBrushInactive}" />
                     </DataTrigger>
                 </Style.Triggers>
             </Style>

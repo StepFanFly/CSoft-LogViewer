@@ -17,107 +17,107 @@
             MethodName="GetOperationTypes"
             ObjectType="{x:Type filters:FilterFactory}" />
         <valueConverters:FilterOperationValueConverter x:Key="FilterOperationConverter" />
-
     </UserControl.Resources>
 
-    <materialDesign:DialogHost Identifier="FilterDialog">
-        <materialDesign:DrawerHost>
-            <DockPanel>
+    <materialDesign:DialogHost DialogTheme="Inherit" Identifier="FilterDialog">
 
 
-                <ListBox
-                    x:Name="RootCollection"
-                    VerticalAlignment="Stretch"
-                    HorizontalContentAlignment="Stretch"
-                    DockPanel.Dock="Top"
-                    ItemsSource="{Binding Filters}"
-                    SelectedItem="{Binding OuterListBoxSelectedFilter}">
-                    <ListBox.ItemTemplate>
-
-                        <DataTemplate>
-                            <DockPanel Height="40">
-
-                                <TextBlock
-                                    VerticalAlignment="Center"
-                                    DockPanel.Dock="Left"
-                                    FontWeight="Bold"
-                                    Text="{Binding Name}" />
-
-                                <ComboBox
-                                    Margin="10,0,0,0"
-                                    HorizontalAlignment="Stretch"
-                                    materialDesign:HintAssist.Hint="Search"
-                                    materialDesign:HintAssist.HintOpacity=".26"
-                                    IsEditable="True"
-                                    ItemsSource="{Binding AllKeyWords}"
-                                    SelectedItem="{Binding SelectedKeyWord}" />
-
-                                <ComboBox
-                                    Margin="10,0,0,0"
-                                    HorizontalAlignment="Stretch"
-                                    HorizontalContentAlignment="Center"
-                                    materialDesign:HintAssist.Hint="Search"
-                                    materialDesign:HintAssist.HintOpacity=".26"
-                                    IsEditable="True"
-                                    ItemsSource="{Binding Source={StaticResource AvailableOperTypes}, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource FilterOperationConverter}}"
-                                    SelectedItem="{Binding SelectedOperationType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource FilterOperationConverter}}" />
+        <DockPanel >
 
 
-                                <Button
-                                    Width="20"
-                                    Height="20"
-                                    Margin="2,0,2,0"
-                                    HorizontalAlignment="Right"
-                                    Background="{StaticResource MaterialDesignLightBackground}"
-                                    BorderBrush="#FFA6A6A6"
-                                    Command="{Binding DataContext.RemoveFilterCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
-                                    CommandParameter="{Binding}"
-                                    DockPanel.Dock="Right"
-                                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
-                                    <materialDesign:PackIcon Foreground="Gray" Kind="Close" />
-                                </Button>
-                            </DockPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+            <ListBox
+                x:Name="RootCollection"
+                VerticalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                DockPanel.Dock="Top"
+                ItemsSource="{Binding Filters}"
+                SelectedItem="{Binding OuterListBoxSelectedFilter}">
+                <ListBox.ItemTemplate>
 
-                <StackPanel
-                    Height="50"
-                    Margin="0,16,0,0"
-                    DockPanel.Dock="Bottom"
-                    Orientation="Horizontal">
-                    <Button
-                        Command="{Binding ChowFtDlgCommand}"
-                        IsDefault="True"
-                        Style="{DynamicResource MaterialDesignFlatButton}">
-                        <!--<Button.CommandParameter>
+                    <DataTemplate>
+                        <DockPanel Height="40">
+
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                DockPanel.Dock="Left"
+                                FontWeight="Bold"
+                                Text="{Binding Name}" />
+
+                            <ComboBox
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Stretch"
+                                materialDesign:HintAssist.Hint="Search"
+                                materialDesign:HintAssist.HintOpacity=".26"
+                                IsEditable="True"
+                                ItemsSource="{Binding AllKeyWords}"
+                                SelectedItem="{Binding SelectedKeyWord}" />
+
+                            <ComboBox
+                                Margin="10,0,0,0"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"
+                                materialDesign:HintAssist.Hint="Search"
+                                materialDesign:HintAssist.HintOpacity=".26"
+                                IsEditable="True"
+                                ItemsSource="{Binding Source={StaticResource AvailableOperTypes}, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource FilterOperationConverter}}"
+                                SelectedItem="{Binding SelectedOperationType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource FilterOperationConverter}}" />
+
+
+                            <Button
+                                Width="20"
+                                Height="20"
+                                Margin="2,0,2,0"
+                                HorizontalAlignment="Right"
+                                Background="{StaticResource MaterialDesignLightBackground}"
+                                BorderBrush="#FFA6A6A6"
+                                Command="{Binding DataContext.RemoveFilterCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+                                CommandParameter="{Binding}"
+                                DockPanel.Dock="Right"
+                                Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}">
+                                <materialDesign:PackIcon Foreground="Gray" Kind="Close" />
+                            </Button>
+                        </DockPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <StackPanel
+                Height="50"
+                Margin="0,16,0,0"
+                DockPanel.Dock="Bottom"
+                Orientation="Horizontal">
+                <Button
+                    Command="{Binding ChowFtDlgCommand}"
+                    IsDefault="True"
+                    Style="{DynamicResource MaterialDesignFlatButton}">
+                    <!--<Button.CommandParameter>
                     <system:Boolean>True</system:Boolean>
                 </Button.CommandParameter>-->
-                        NEWFILTER
-                    </Button>
+                    NEWFILTER
+                </Button>
 
-                    <Button
-                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-                        IsDefault="True"
-                        Style="{DynamicResource MaterialDesignFlatButton}">
-                        <Button.CommandParameter>
-                            <system:Boolean>True</system:Boolean>
-                        </Button.CommandParameter>
-                        ACCEPT
-                    </Button>
-                    <Button
-                        Margin="8,0,0,0"
-                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-                        IsCancel="True"
-                        Style="{DynamicResource MaterialDesignFlatButton}">
-                        <Button.CommandParameter>
-                            <system:Boolean>False</system:Boolean>
-                        </Button.CommandParameter>
-                        CANCEL
-                    </Button>
-                </StackPanel>
-            </DockPanel>
-        </materialDesign:DrawerHost>
+                <Button
+                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                    IsDefault="True"
+                    Style="{DynamicResource MaterialDesignFlatButton}">
+                    <Button.CommandParameter>
+                        <system:Boolean>True</system:Boolean>
+                    </Button.CommandParameter>
+                    ACCEPT
+                </Button>
+                <Button
+                    Margin="8,0,0,0"
+                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
+                    IsCancel="True"
+                    Style="{DynamicResource MaterialDesignFlatButton}">
+                    <Button.CommandParameter>
+                        <system:Boolean>False</system:Boolean>
+                    </Button.CommandParameter>
+                    CANCEL
+                </Button>
+            </StackPanel>
+        </DockPanel>
+
     </materialDesign:DialogHost>
 
 </UserControl>

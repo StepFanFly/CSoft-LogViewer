@@ -1,9 +1,9 @@
-﻿
-
-using LogViewer.Infrastructure;
+﻿using LogViewer.Infrastructure;
 using LogViewer.Models;
 using LogViewer.ViewModels.Base;
+using MaterialDesignThemes.Wpf;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.IO;
 using System.Windows;
 
@@ -11,6 +11,54 @@ namespace LogViewer
 {
     public class LogViewerVM : ViewModelBase
     {
+        private bool _isDarkTheme =true;
+        public bool IsDarkTheme
+        {
+            get => _isDarkTheme;
+            set
+            {
+                if (_isDarkTheme != value)
+                {
+                    _isDarkTheme = value;
+                   
+                    ApplyBase(value);
+
+                    if (_isDarkTheme)
+                        LoadDarkTheme();
+                    else
+                        LoadLightTheme();
+                }
+            }
+        }
+
+        private static void ApplyBase(bool isDark)
+           => ModifyTheme(theme => theme.SetBaseTheme(isDark ? Theme.Dark : Theme.Light));
+
+
+        private static void ModifyTheme(Action<ITheme> modificationAction)
+        {
+            PaletteHelper paletteHelper = new PaletteHelper();
+            ITheme theme = paletteHelper.GetTheme();
+
+            modificationAction?.Invoke(theme);
+
+            paletteHelper.SetTheme(theme);
+        }
+
+        private static void LoadDarkTheme()
+        {
+            const string DarkThemePath = "Views/Styles/ColorsForBlackTheme.xaml";
+            var newRDComponent = (ResourceDictionary)App.LoadComponent(new Uri(DarkThemePath, UriKind.Relative));
+            Application.Current.Resources.MergedDictionaries[0] = newRDComponent;
+        }
+
+        private static void LoadLightTheme()
+        {
+          const string LightThemePath = "Views/Styles/ColorsForWhiteTheme.xaml";
+          var newRDComponent = (ResourceDictionary)App.LoadComponent(new Uri(LightThemePath, UriKind.Relative));
+          Application.Current.Resources.MergedDictionaries[0] = newRDComponent;
+        }
+
         #region Public fields
         /// <summary>
         /// Collection of search field which also may be LogFile

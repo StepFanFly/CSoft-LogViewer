@@ -26,4 +26,11 @@
     <Resource Include="Views\mainicon.ico" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Page Update="Views\Styles\ColorsForBlackTheme.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>

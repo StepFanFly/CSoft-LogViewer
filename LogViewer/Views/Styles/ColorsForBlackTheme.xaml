@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush x:Key="TitleBarBackgroundBrush" Color="#FF333333" />
+    <SolidColorBrush x:Key="VSWindowBorderBrush" Color="#007ACC" />
+    <SolidColorBrush x:Key="VSWindowBorderBrushInactive" Color="#999999" />
+    <SolidColorBrush x:Key="VSWindowStatusForeground" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="VSWindowStatusForegroundInactive" Color="#FFFFFF" />
+
+
+    <SolidColorBrush x:Key="TextEditorLineNumbersForeground" Color="#0073E6" />
+    <SolidColorBrush x:Key="TextEditorForegtound" Color="White" />
+
+</ResourceDictionary>

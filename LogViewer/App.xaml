@@ -11,8 +11,13 @@
     <Application.Resources>
         <ResourceDictionary>
             <local:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
+
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="Views/Styles/ColorsForBlackTheme.xaml" />
+                <materialDesign:BundledTheme
+                    BaseTheme="Inherit"
+                    PrimaryColor="DeepPurple"
+                    SecondaryColor="Lime" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
                 <ResourceDictionary Source="Views/Styles/CustomizedWindow/VSWindowStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
