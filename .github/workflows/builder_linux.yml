@@ -1,12 +1,12 @@
-name: .NET
+name: .NET for Linux.
 
 on: [push, pull_request]
 
 jobs:
   build:
-    name: Initialize build on .NET Core
+    name: Initialize build on .NET Core for Linux
     
-    runs-on: windows-latest
+    runs-on: 'ubuntu-latest'
 
     steps:
     - uses: actions/checkout@v2
